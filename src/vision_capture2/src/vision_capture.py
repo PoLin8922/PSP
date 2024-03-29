@@ -25,46 +25,9 @@ image = None
 cloud_data = None
 centroid = None
 
-def image_callback(msg):
-    global image
-    try:
-        image = bridge.imgmsg_to_cv2(msg, "bgr8")
-    except Exception as e:
-        rospy.logerr("Error processing image: %s" % str(e))
-
 def cloud_callback(msg):
     global cloud_data
     cloud_data = msg
-
-def get_pose():
-    global image, tag_rotation, tag_translation
-    sample = 0
-
-    if image is not None:
-        at_detector = Detector(families='tag36h11')
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        tags = at_detector.detect(gray_image, estimate_tag_pose=True, camera_params=camera_params, tag_size=tag_size)
-
-        if len(tags) == 0:
-            print('\033[91m' + " [MOD] POSE_ERROR: No APRILTAG detected." + '\033[0m')
-            LOGGING(state="   [MOD_ERROR]No APRILTAG detected")
-            return None, None
-
-        else:
-            for tag in tags:
-                if 1 == tag.tag_id:
-                    sample = 1
-            for tag in tags:
-                if 0 == tag.tag_id and sample == 1:
-                    tag_rotation = tag.pose_R
-                    tag_translation = tag.pose_t
-                    print('\033[92m' + " [MOD] POSE OK." + '\033[0m')
-                elif 0 == tag.tag_id and sample == 0:
-                    print('\033[91m' + " [MOD] POSE_ERROR: No APRILTAG detected." + '\033[0m')
-                    LOGGING(state="   [MOD_ERROR]No ")
-
-    #TF(tag_rotation, tag_translation)
-    return tag_rotation, tag_translation
 
 def LOGGING(state):
     homeDir = os.getenv("HOME")
@@ -79,31 +42,6 @@ def LOGGING(state):
             file.write('\n')
         file.write(state)
 
-def TF(rotation, transition):
-    print("tf ............")
-    homeDir = os.getenv("HOME")
-    if homeDir is None:
-        sys.stderr.write("Failed to get the home directory.\n")
-
-    if rotation is None or transition is None:
-        print("Error: Rotation or translation is None.")
-        return
-
-    # file_loc = homeDir + '/PSP/files/TF.txt'
-    file_loc = '/home/honglang/PSP/files/TF.txt'
-
-    tf = []
-    for i in range(3):
-        for j in range(3):
-            tf.append(rotation[i][j])
-    for i in range(3):
-        tf.append(transition[0][i])
-
-    with open(file_loc, 'w') as file:
-        for i in range(len(tf)):
-            file.write(str(tf[i]))  # Convert to string before writing
-            file.write('\n')
-
 def center_point_cloud(point_cloud):
     global centroid
     print(centroid)
@@ -111,7 +49,7 @@ def center_point_cloud(point_cloud):
     translated_pcd = point_cloud.translate(-centroid)
     return translated_pcd
 
-def save_point_cloud_as_pcd(rotation, translation):
+def save_point_cloud_as_pcd():
     global cloud_data
     if cloud_data is not None:
         pc_np = pc2.read_points(cloud_data, field_names=("x", "y", "z"), skip_nans=True)
@@ -119,27 +57,9 @@ def save_point_cloud_as_pcd(rotation, translation):
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(pc_np)
 
-        pcd.rotate(np.linalg.inv(rotation), center=(0, 0, 0))
-        pcd.translate(-1 * np.linalg.inv(rotation) @ translation)
-
-        bounding_box = o3d.geometry.AxisAlignedBoundingBox(
-            min_bound=[-0.35, 0, -0.1],
-            max_bound=[0, 0.22, -0.03]
-        )
-
-        cropped_pcd = pcd.crop(bounding_box)
-
-        downsampled_pcd = cropped_pcd.voxel_down_sample(voxel_size=0.005)
+        downsampled_pcd = pcd.voxel_down_sample(voxel_size=0.005)
 
         centroid_pcd = center_point_cloud(downsampled_pcd)
-
-        print("tag.transition", tag_translation)
-        print("centroid", centroid)
-        camera_to_centroid = tag_translation.T + centroid
-        # for i in range(3):
-        #     camera_to_centroid[i] =  tag_translation[i] + centroid[i]
-        print("camera_to_centroid", camera_to_centroid)
-        TF(tag_rotation, camera_to_centroid)
 
         # find the max_x & min_x
         max_x = float('-inf')
@@ -173,13 +93,11 @@ def save_point_cloud_as_pcd(rotation, translation):
 
 def capture(req):
     if req.scan == True:
-        rotation, translation = get_pose()
-        save_point_cloud_as_pcd(rotation, translation)
+        save_point_cloud_as_pcd()
         return VisionCaptureResponse(True)
 
 def ros_server():
     rospy.init_node('vision_capture')
-    rospy.Subscriber("/camera/color/image_raw", Image, image_callback)
     rospy.Subscriber("/camera/depth/color/points", PointCloud2, cloud_callback)
     s = rospy.Service('/vision_capture', VisionCapture, capture)
     rospy.spin()
