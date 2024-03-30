@@ -408,8 +408,8 @@ vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud )
         if ( i % 2 == 0 )
         {
             std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisBigToSmall );
-            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.05, tmp_cloud[ 0 ][ 2 ] + 0.02, 0, 0, 0 };
-            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.05, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ] + 0.02, 0, 0, 0 };
+            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.02, tmp_cloud[ 0 ][ 2 ] + 0.02, 0, 0, 0 };
+            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.02, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ] + 0.02, 0, 0, 0 };
             edge_contour.push_back( tmp_cloud.front() );
             edge_contour.push_back( tmp_cloud.back() );
             ok_cloud_1.push_back( ap_max_y );
@@ -425,8 +425,8 @@ vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud )
         else
         {
             std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisSmallToBig );
-            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.05, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ]+ 0.02, 0, 0, 0 };
-            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.05, tmp_cloud[ 0 ][ 2 ]+ 0.02, 0, 0, 0 };
+            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.02, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ]+ 0.02, 0, 0, 0 };
+            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.02, tmp_cloud[ 0 ][ 2 ]+ 0.02, 0, 0, 0 };
             edge_contour.push_back( tmp_cloud.back() );
             edge_contour.push_back( tmp_cloud.front() );
             ok_cloud_1.push_back( ap_min_y );

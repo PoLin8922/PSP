@@ -13,12 +13,7 @@ import sensor_msgs.point_cloud2 as pc2
 import open3d as o3d
 from vision_capture2.srv import VisionCapture, VisionCaptureResponse
 
-global image, tag_rotation, tag_translation, centroid
-
-camera_params = (610.319671, 611.570539, 317.992731, 235.564522)
-tag_size = 0.0408
-tag_rotation = None
-tag_translation = None
+global centroid
 
 bridge = CvBridge()
 image = None
@@ -57,7 +52,14 @@ def save_point_cloud_as_pcd():
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(pc_np)
 
-        downsampled_pcd = pcd.voxel_down_sample(voxel_size=0.005)
+        bounding_box = o3d.geometry.AxisAlignedBoundingBox(
+            min_bound=[-0.168, -0.1, 0.3],
+            max_bound=[0.3, 0.075, 0.43]
+        )
+
+        cropped_pcd = pcd.crop(bounding_box)
+
+        downsampled_pcd = cropped_pcd.voxel_down_sample(voxel_size=0.005)
 
         centroid_pcd = center_point_cloud(downsampled_pcd)
 
