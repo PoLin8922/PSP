@@ -4,10 +4,7 @@ import cv2
 import os
 import sys
 import numpy as np
-from pupil_apriltags import Detector
-from cv_bridge import CvBridge
 import rospy
-from sensor_msgs.msg import Image
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import open3d as o3d
@@ -15,8 +12,6 @@ from vision_capture2.srv import VisionCapture, VisionCaptureResponse
 
 global centroid
 
-bridge = CvBridge()
-image = None
 cloud_data = None
 centroid = None
 
@@ -67,7 +62,7 @@ def save_point_cloud_as_pcd():
         max_x = float('-inf')
         min_x = float('inf')
         for point in centroid_pcd.points:
-            x = point[0]  # 第一个元素是 X 座标
+            x = point[0]
             if x > max_x:
                 max_x = x
             if x < min_x:
@@ -88,14 +83,22 @@ def save_point_cloud_as_pcd():
 
             current_x = current_x + x_resolution
 
-
-
         # o3d.io.write_point_cloud( homeDir + "/PSP/files/point_cloud.pcd", centroid_pcd )
         o3d.io.write_point_cloud("/home/honglang/PSP/files/point_cloud.pcd", centroid_pcd)
 
 def capture(req):
+    save_point_cloud_as_pcd()
     if req.scan == True:
         save_point_cloud_as_pcd()
+        cropped_pcd = o3d.io.read_point_cloud("/home/honglang/PSP/files/point_cloud.pcd")
+
+        # visualize
+        axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=np.zeros(3))
+        blue_color = np.array([[0.0, 0.0, 1.0] for _ in range(len(cropped_pcd.points))])
+        cropped_pcd.colors = o3d.utility.Vector3dVector(blue_color)
+        scene = [cropped_pcd, axes]
+        o3d.visualization.draw_geometries(scene, window_name="Cropped Point Cloud with XYZ Axes", width=800, height=600)
+
         return VisionCaptureResponse(True)
 
 def ros_server():

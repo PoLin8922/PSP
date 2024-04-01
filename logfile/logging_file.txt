@@ -240,3 +240,16 @@
    [MOD_ERROR]No APRILTAG detected
    [MOD_ERROR]No 
    [MOD_ERROR]No APRILTAG detected
+[Time] 2024-03-31_19-34-24[Start] 
+[End] 
+[Time] 2024-03-31_19-38-47[Start] 
+[End] 
+[Time] 2024-03-31_19-40-32[Start] 
+[Time] 2024-03-31_19-41-27[Start] 
+[End] 
+[Time] 2024-03-31_19-42-29[Start] 
+[End] 
+[Time] 2024-03-31_19-46-21[Start] 
+[End] 
+[Time] 2024-04-01_18-27-56[Start] 
+[End] 

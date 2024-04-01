@@ -2,22 +2,29 @@
 #include <fstream>
 #include <math.h>
 #include <string>
+#include <queue>
+
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/statistical_outlier_removal.h>
-#include <open3d/Open3D.h>
-#include "workingSpaceTF.cpp"
-#include "json.hpp"
-#include <queue>
-
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/common/centroid.h>
+#include <pcl/common/common.h>
+#include <pcl/filters/crop_box.h>
 #include <pcl/sample_consensus/ransac.h>
 #include <pcl/sample_consensus/sac_model_plane.h>
 
+#include <open3d/Open3D.h>
+
 #include <ros/ros.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <path_planning_ver1/path_planning_ver1.h>
+
+#include "workingSpaceTF.cpp"
+#include "json.hpp"
 
 #define PI 3.14159
 #define REI_B 0.04
@@ -530,12 +537,6 @@ void the_origin_main_function ()
 
     const std::string file_path = "H001.LS";
 
-    // for(auto& point:waypoints){
-    //     double tmp=point.x;
-    //     point.x=point.y;
-    //     point.y=tmp;
-    // }
-
     if ( writeLsFile( absfile_path,file_path ,waypoints ) )
     {
         printf( "Write LS error !!!\n" );
@@ -565,7 +566,7 @@ bool server_callback ( path_planning_ver1::path_planning_ver1::Request &req,
 int main ( int argc, char **argv )
 {
     readParameters();
-    the_origin_main_function();
+    // the_origin_main_function();
 
     ros::init( argc, argv, "path_planning_ver1" );
     ros::NodeHandle nh;
