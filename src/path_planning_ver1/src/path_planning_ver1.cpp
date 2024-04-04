@@ -44,10 +44,11 @@ double nearby_distance = 0.022;
 float removeBounceGate = 0.1;
 int rounds=10;
 double height=0.03;
+
 double velocity = 300;
 double camera_x = 0;
 double camera_y = 0;
-double camera_z = -100;
+double camera_z = -1;
 vector<vector<double>> edge_contour;
 
 int readParameters ()
@@ -150,7 +151,10 @@ vector<vector<double>> estimateNormals ( pcl::PointCloud<pcl::PointXYZRGBA>::Ptr
     }
 
     o3dCloud.normals_ = o3dNormals.points_;
-    // o3dCloud.OrientNormalsTowardsCameraLocation(Eigen::Vector3d::Zero());
+    o3dCloud.OrientNormalsTowardsCameraLocation(Eigen::Vector3d::Zero());
+    //o3dCloud.OrientNormalsTowardsCameraLocation( Eigen::Vector3d( camera_x, camera_y, camera_z ) );
+    o3dCloud.EstimateNormals( open3d::geometry::KDTreeSearchParamHybrid(0.01,10) );
+
     o3dCloud.OrientNormalsTowardsCameraLocation( Eigen::Vector3d( camera_x, camera_y, camera_z ) );
 
     // Convert to (x, y, z, a, b, c) vector format
@@ -166,7 +170,7 @@ vector<vector<double>> estimateNormals ( pcl::PointCloud<pcl::PointXYZRGBA>::Ptr
     vector<shared_ptr<const open3d::geometry::Geometry>> geometries;
     geometries.push_back( make_shared<const open3d::geometry::PointCloud>( o3dCloud ) );
 
-    //open3d::visualization::DrawGeometries(geometries, "result", 800, 800, 50, 50, true);
+    open3d::visualization::DrawGeometries(geometries, "result", 800, 800, 50, 50, true);
 
     return vectors;
 }
@@ -523,10 +527,23 @@ void the_origin_main_function ()
         point[ 2 ] = (point[ 2 ]+height )* 1000;
     }
 
+    // for (const auto& point : point_cloud) {
+    //     for (const auto& value : point) {
+    //         std::cout << value << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
     std::vector<Waypoint> waypoints;
     double theta = 0;
     vector2Angle( point_cloud );
     workingSpaceTF( point_cloud, waypoints, theta, TF_Z_BIAS, velocity );
+
+    for (const auto& point : point_cloud) {
+        for (const auto& value : point) {
+            std::cout << value << " ";
+        }
+        std::cout << std::endl;
+    }
 
     if ( homeDir == nullptr )
     {
@@ -566,18 +583,18 @@ bool server_callback ( path_planning_ver1::path_planning_ver1::Request &req,
 int main ( int argc, char **argv )
 {
     readParameters();
-    // the_origin_main_function();
+    the_origin_main_function();
 
-    ros::init( argc, argv, "path_planning_ver1" );
-    ros::NodeHandle nh;
-    ros::Rate loop_rate( 30 );
-    ros::ServiceServer service = nh.advertiseService( "path_planning_ver1", server_callback );
+    // ros::init( argc, argv, "path_planning_ver1" );
+    // ros::NodeHandle nh;
+    // ros::Rate loop_rate( 30 );
+    // ros::ServiceServer service = nh.advertiseService( "path_planning_ver1", server_callback );
 
-    while( ros::ok() ) 
-    {
-        loop_rate.sleep();
-        ros::spinOnce();
-    }
+    // while( ros::ok() ) 
+    // {
+    //     loop_rate.sleep();
+    //     ros::spinOnce();
+    // }
 
     return 0;
 }

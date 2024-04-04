@@ -90,7 +90,8 @@ class controller ():
         time.sleep(1)
         self.capture(True)
         self.planning(True)
-        self.fileTf('192.168.255.200', '/home/honglang/PSP/files/B003.LS')
+        self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
+        self.fanucStart(True)
 
     def LOGGING ( self, state ):
         homeDir = os.getenv( "HOME" )

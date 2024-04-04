@@ -55,8 +55,40 @@ void vector2Angle(std::vector<std::vector<double>>& points)
 
 void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<Waypoint>& waypoints, double theta,double TF_Z_BIAS,double vel) 
 {
+    // Transform robot base to camera
+    double transition_rtc[3] = {540.000, -5.000, 460.000};
+    Eigen::MatrixXd tf_robot_to_camera(4, 4);
+    tf_robot_to_camera << -1.0, 0.0, 0.0, transition_rtc[0],
+                          0.0, -1.0, 0.0, transition_rtc[1],
+                          0.0, 0.0, -1.0, transition_rtc[2],
+                          0.0, 0.0, 0.0, 1.0;
+    //std::cout << "tf_robot_to_camera:" << std::endl << tf_robot_to_camera << std::endl;
+    
+    // Transform camera to workpiece
+    std::string file_path = "/home/honglang/PSP/files/TF.txt"; 
+    std::ifstream input_file(file_path);
+    if (!input_file.is_open()) {
+        std::cerr << "Error opening file: " << file_path << std::endl;
+        return;  
+    }
+
+    std::vector<double> camera_to_piece;
+    std::string line;
+    while (std::getline(input_file, line)) {
+        camera_to_piece.push_back(std::stod(line));
+    }
+    input_file.close();
+
+    Eigen::MatrixXd tf_camera_to_workpiece(4, 4);
+    tf_camera_to_workpiece << camera_to_piece[0], camera_to_piece[1], camera_to_piece[2], -camera_to_piece[9]*1000,
+                          camera_to_piece[3], camera_to_piece[4], camera_to_piece[5], -camera_to_piece[10]*1000,
+                          camera_to_piece[6], camera_to_piece[7], camera_to_piece[8], -camera_to_piece[11]*1000,
+                          0.0, 0.0, 0.0, 1.0;
+    //std::cout << "tf_camera_to_workpiece:" << std::endl << tf_camera_to_workpiece << std::endl;
+
     // Transform robot base to workspace
-    double transition_p[3] = {420.000, 0.000, -325.827+TF_Z_BIAS};
+    // double transition_p[3] = {420.000, 0.000, -325.827+TF_Z_BIAS};
+    double transition_p[3] = {0.000, 0.000, -325.827+TF_Z_BIAS};
     double transition_v[3] = {-180, 0, 0};
 
     theta = theta * (3.1415 / 180);
@@ -67,7 +99,12 @@ void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<
                           0.0, 0.0, 0.0, 1.0;
     // std::cout << "tf_robot_workspace:" << std::endl << tf_robot_workspace << std::endl;
 
-    // start point
+    Eigen::MatrixXd tf_robot_to_workpiece = tf_camera_to_workpiece*tf_robot_to_camera;
+    //std::cout << "tf_robot_to_workpiece:" << std::endl << tf_robot_to_workpiece << std::endl;
+
+    //std::cout << "final tf :" << std::endl << tf_robot_workspace*tf_robot_to_workpiece.inverse() << std::endl;
+
+    // capture point
     Waypoint startPoint;
     initializeWaypoints(&startPoint,vel);
     startPoint.x = 420.246;
@@ -80,7 +117,7 @@ void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<
     waypoints.push_back(startPoint);
     for (int i = 0; i < points.size(); i++) {
         Eigen::Vector4d point_matrix(points[i][0], points[i][1], points[i][2], 1.0);
-        Eigen::MatrixXd position_tf = tf_robot_workspace*point_matrix;  
+        Eigen::MatrixXd position_tf = tf_robot_workspace*tf_robot_to_workpiece.inverse()*point_matrix;  
 
         // Transform vectors to workspace
         double vector_tf[3];

@@ -3,5 +3,6 @@
     <node pkg="vision_capture2" type = "vision_capture.py" name="vision_capture" output="screen"/>
     <node pkg="path_planning_ver1" type="path_planning_ver1" name="path_planning_ver1" output="screen"/>
     <node pkg="communication" type="passLS_srv" name="passLS_srv" output="screen"/>
+    <node pkg="communication" type="modbus_robot_srv" name="modbus_robot_srv" output="screen"/>
     
 </launch>
