@@ -1,4 +1,25 @@
-#include"workingSpaceTF.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <vector>
+#include <fstream>
+#include <array>
+#include <iostream>
+#include <iomanip>
+#include <Eigen/Dense>
+
+struct Waypoint
+{
+    double x;
+    double y;
+    double z;
+    double W;
+    double P;
+    double R;
+    double V;
+    std::string C;
+};
 
 void initializeWaypoints(Waypoint *waypoint,double V)
 {
