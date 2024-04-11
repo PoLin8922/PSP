@@ -34,7 +34,7 @@ include_directories(
 )
 
 
-add_executable(path_planning_ver1 src/path_planning_ver1.cpp src/workingSpaceTF.cpp src/planning.cpp)
+add_executable(path_planning_ver1 src/path_planning_ver1.cpp src/workingSpaceTF.cpp src/planning.cpp src/pointcloud_process.cpp)
 
 target_link_libraries(
   path_planning_ver1

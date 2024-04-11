@@ -3,25 +3,20 @@
 #include "path_planning_ver1/path_planning_ver1.h"
 
 #include"planning.h"
+#include"pointcloud_process.h"
 #include"workingSpaceTF.h"
 #include "json.h"
-
-#define PI 3.14159
-#define REI_B 0.04
-#define REI_H 0.01
 
 using namespace std;
 using json = nlohmann::json;
 
-// Filter out the workspacef
 double DOWN_SAMPLE_SIZE = 0.005;
-
 double TF_Z_BIAS = 0;
 double height=0.03;
 double velocity = 300;
-int rounds=5;
 double PLASMA_DIA = 0.05;
 double CLOUD_SEARCHING_RANGE = 0.002;
+int rounds=5;
 
 int readParameters ()
 {
@@ -52,7 +47,7 @@ int readParameters ()
     return 1;
 }
 
-void the_origin_main_function ()
+void get_path ()
 {
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZRGBA> );
 
@@ -76,38 +71,25 @@ void the_origin_main_function ()
     voxelGrid.setLeafSize( DOWN_SAMPLE_SIZE, DOWN_SAMPLE_SIZE, DOWN_SAMPLE_SIZE );
     voxelGrid.filter( *downsampledCloud );
 
-    pcl::StatisticalOutlierRemoval<pcl::PointXYZRGBA> sor;
-    sor.setInputCloud( downsampledCloud );
-    sor.setMeanK( 500 );
-    sor.setStddevMulThresh( 0.001 );
-
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr smooth( new pcl::PointCloud<pcl::PointXYZRGBA> );
-    // sor.filter( *smooth );
 
-    vector<vector<double>> vectors = estimateNormals( downsampledCloud );
-    vector<vector<double>> ok_cloud = OriginCorrectionPointCloud( vectors );
+    vector<vector<double>> cloud_w_vector = estimateNormals( downsampledCloud );
+    vector<vector<double>> correction_cloud = OriginCorrectionPointCloud( cloud_w_vector );
 
     // jylong edit
-    std::vector<std::vector<double>> point_cloud = PathPlanning( ok_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
+    std::vector<std::vector<double>> point_cloud = PathPlanning( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
 
     for ( auto &point : point_cloud )
     {
         point[ 0 ] = point[ 0 ] * 1000;
         point[ 1 ] = point[ 1 ] * 1000;
-        point[ 2 ] = (point[ 2 ]+height )* 1000;
+        point[ 2 ] = ( point[ 2 ] + height )* 1000;
     }
 
     std::vector<Waypoint> waypoints;
     double theta = 0;
     vector2Angle( point_cloud );
     workingSpaceTF( point_cloud, waypoints, theta, TF_Z_BIAS, velocity );
-
-    // for (const auto& point : point_cloud) {
-    //     for (const auto& value : point) {
-    //         std::cout << value << " ";
-    //     }
-    //   std::cout << std::endl;
-    // }
 
     if ( homeDir == nullptr )
     {
@@ -133,7 +115,7 @@ bool server_callback ( path_planning_ver1::path_planning_ver1::Request &req,
 {
     if ( req.REQU_PP == true )
     {
-        the_origin_main_function();
+        get_path();
         res.RESP_PP = true;
     }
     else
@@ -147,7 +129,7 @@ bool server_callback ( path_planning_ver1::path_planning_ver1::Request &req,
 int main ( int argc, char **argv )
 {
     readParameters();
-    the_origin_main_function();
+    get_path();
 
     // ros::init( argc, argv, "path_planning_ver1" );
     // ros::NodeHandle nh;
