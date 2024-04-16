@@ -128,19 +128,19 @@ bool server_callback ( path_planning_ver1::path_planning_ver1::Request &req,
 
 int main ( int argc, char **argv )
 {
-    readParameters();
-    get_path();
+    //readParameters();
+    //get_path();
 
-    // ros::init( argc, argv, "path_planning_ver1" );
-    // ros::NodeHandle nh;
-    // ros::Rate loop_rate( 30 );
-    // ros::ServiceServer service = nh.advertiseService( "path_planning_ver1", server_callback );
+    ros::init( argc, argv, "path_planning_ver1" );
+    ros::NodeHandle nh;
+    ros::Rate loop_rate( 30 );
+    ros::ServiceServer service = nh.advertiseService( "path_planning_ver1", server_callback );
 
-    // while( ros::ok() ) 
-    // {
-    //     loop_rate.sleep();
-    //     ros::spinOnce();
-    // }
+    while( ros::ok() ) 
+    {
+        loop_rate.sleep();
+        ros::spinOnce();
+    }
 
     return 0;
 }
