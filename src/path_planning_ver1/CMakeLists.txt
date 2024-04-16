@@ -27,17 +27,16 @@ catkin_package(
 ) 
 
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
   ${Open3D_INCLUDE_DIRS}
 )
 
+include_directories(${PCL_INCLUDE_DIRS})
 
-add_executable(path_planning_ver1 src/path_planning_ver1.cpp src/workingSpaceTF.cpp src/planning.cpp src/pointcloud_process.cpp)
+add_executable(path_planning_ver1 src/path_planning_ver1.cpp)
 
-target_link_libraries(
-  path_planning_ver1
+target_link_libraries(path_planning_ver1
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
   ${Open3D_LIBRARIES}
