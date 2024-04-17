@@ -72,10 +72,13 @@ void get_path ()
     voxelGrid.filter( *downsampledCloud );
 
     vector<vector<double>> cloud_w_vector = estimateNormals( downsampledCloud );
+    vector<double> center = FindCorrectionCenter( cloud_w_vector );
     vector<vector<double>> correction_cloud = OriginCorrectionPointCloud( cloud_w_vector );
 
     // jylong edit
-    std::vector<std::vector<double>> point_cloud = PathPlanning( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
+    std::vector<std::vector<double>> path_point_cloud = PathPlanning( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
+
+    std::vector<std::vector<double>> point_cloud = ResumePointCloudFromOrigin ( path_point_cloud, center );
 
     for ( auto &point : point_cloud )
     {

@@ -72,7 +72,7 @@ vector<vector<double>> estimateNormals ( pcl::PointCloud<pcl::PointXYZRGBA>::Ptr
 
     o3dCloud.normals_ = o3dNormals.points_;
     o3dCloud.OrientNormalsTowardsCameraLocation(Eigen::Vector3d::Zero());
-    o3dCloud.EstimateNormals( open3d::geometry::KDTreeSearchParamHybrid(0.01,10) );
+    o3dCloud.EstimateNormals( open3d::geometry::KDTreeSearchParamHybrid(0.05,20) );
     o3dCloud.OrientNormalsTowardsCameraLocation( Eigen::Vector3d( 0, 0, -1) );
 
     // Convert to (x, y, z, a, b, c) vector format
@@ -136,6 +136,53 @@ void printPointCloudRange ( const pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud 
     }
 }
 
+vector<double> FindCorrectionCenter(vector<vector<double>> cloud)
+{
+    float center_x, center_y, low_z, max_x, min_x, max_y, min_y = 0;
+    max_x = cloud[0][0];
+    for (int i = 0; i < cloud.size(); i++)
+    {
+        if (cloud[i][0] > max_x)
+        {
+            max_x = cloud[i][0];
+        }
+    }
+
+    min_x = cloud[0][0];
+    for (int i = 0; i < cloud.size(); i++)
+    {
+        if (cloud[i][0] < min_x)
+        {
+            min_x = cloud[i][0];
+        }
+    }
+
+    max_y = cloud[0][1];
+    for (int i = 0; i < cloud.size(); i++)
+    {
+        if (cloud[i][1] > max_y)
+        {
+            max_y = cloud[i][1];
+        }
+    }
+
+    min_y = cloud[0][1];
+    for (int i = 0; i < cloud.size(); i++)
+    {
+        if (cloud[i][1] < min_y)
+        {
+            min_y = cloud[i][1];
+        }
+    }
+
+    center_x = (max_x + min_x) / 2;
+    center_y = (max_y + min_y) / 2;
+
+    vector<double> center = {{center_x, center_y, low_z}};
+
+    return center;
+}
+
 vector<vector<double>> OriginCorrectionPointCloud ( vector<vector<double>> cloud )
 {
     float center_x, center_y, low_z, max_x, min_x, max_y, min_y = 0;
@@ -192,6 +239,18 @@ vector<vector<double>> OriginCorrectionPointCloud ( vector<vector<double>> cloud
         cloud[ i ][ 0 ] = cloud[ i ][ 0 ] - center_x;
         cloud[ i ][ 1 ] = cloud[ i ][ 1 ] - center_y;
         cloud[ i ][ 2 ] = cloud[ i ][ 2 ] - low_z;
+    }
+
+    return cloud;
+}
+
+vector<vector<double>> ResumePointCloudFromOrigin ( vector<vector<double>> cloud, vector<double> center )
+{
+    for ( int i = 0; i < cloud.size(); i++ )
+    {
+        cloud[ i ][ 0 ] = cloud[ i ][ 0 ] + center[0];
+        cloud[ i ][ 1 ] = cloud[ i ][ 1 ] + center[1];
+        cloud[ i ][ 2 ] = cloud[ i ][ 2 ] + center[2];
     }
 
     return cloud;

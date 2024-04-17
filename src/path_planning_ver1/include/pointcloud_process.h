@@ -13,7 +13,11 @@ vector<vector<double>> estimateNormals ( pcl::PointCloud<pcl::PointXYZRGBA>::Ptr
 
 void printPointCloudRange ( const pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud );
 
+vector<double> FindCorrectionCenter ( vector<vector<double>> cloud );
+
 vector<vector<double>> OriginCorrectionPointCloud ( vector<vector<double>> cloud );
+
+vector<vector<double>> ResumePointCloudFromOrigin ( vector<vector<double>> cloud, vector<double> center );
 
 vector<vector<double>> removeBouncePoints ( vector<vector<double>> cloud );
 

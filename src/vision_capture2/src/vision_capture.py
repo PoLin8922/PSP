@@ -24,23 +24,12 @@ def LOGGING(state):
     if homeDir is None:
         sys.stderr.write("Failed to get the home directory.\n")
 
-    # file_loc = homeDir + '/PSP/files/logging_file.txt'
     file_loc = '/home/honglang/PSP/logfile/logging_file.txt'
 
     with open(file_loc, 'a') as file:
         if file.tell() != 0:
             file.write('\n')
         file.write(state)
-
-def center_point_cloud(point_cloud):
-    global centroid
-    centroid = np.mean(np.asarray(point_cloud.points), axis=0)
-
-    print(centroid)
-
-    translated_pcd = point_cloud.translate(-centroid)
-
-    return translated_pcd
 
 def save_point_cloud_as_pcd():
     global cloud_data
@@ -57,14 +46,12 @@ def save_point_cloud_as_pcd():
 
         cropped_pcd = pcd.crop(bounding_box)
 
-        downsampled_pcd = cropped_pcd.voxel_down_sample(voxel_size=0.005)
-
         #centroid_pcd = center_point_cloud(downsampled_pcd)
 
         # find the max_x & min_x
         max_x = float('-inf')
         min_x = float('inf')
-        for point in downsampled_pcd.points:
+        for point in cropped_pcd.points:
             x = point[0]
             if x > max_x:
                 max_x = x
@@ -76,24 +63,21 @@ def save_point_cloud_as_pcd():
 
         while current_x < max_x:
             loop_min_x = 100
-            for tmp_points in downsampled_pcd.points:
+            for tmp_points in cropped_pcd.points:
                 if tmp_points[0] < current_x + x_resolution and tmp_points[0] >= current_x:
                     if tmp_points[2] < loop_min_x:
                         loop_min_x = tmp_points[2]
-            for tmp_points in downsampled_pcd.points:
+            for tmp_points in cropped_pcd.points:
                 if tmp_points[0] < current_x + x_resolution and tmp_points[0] >= current_x:
                     tmp_points[2] = loop_min_x 
 
             current_x = current_x + x_resolution
-    
-        centroid = np.mean(np.asarray(downsampled_pcd.points), axis=0)
-
-        print(centroid)
 
         # o3d.io.write_point_cloud( homeDir + "/PSP/files/point_cloud.pcd", centroid_pcd )
-        o3d.io.write_point_cloud("/home/honglang/PSP/files/point_cloud.pcd", downsampled_pcd)
+        o3d.io.write_point_cloud("/home/honglang/PSP/files/point_cloud.pcd", cropped_pcd)
 
 def capture(req):
+    print("fuck")
     save_point_cloud_as_pcd()
     if req.scan == True:
         save_point_cloud_as_pcd()
@@ -109,6 +93,7 @@ def capture(req):
         return VisionCaptureResponse(True)
 
 def ros_server():
+    
     rospy.init_node('vision_capture')
     rospy.Subscriber("/camera/depth/color/points", PointCloud2, cloud_callback)
     s = rospy.Service('/vision_capture', VisionCapture, capture)

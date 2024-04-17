@@ -34,6 +34,15 @@ void vector2Angle(std::vector<std::vector<double>>& points)
 
 void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<Waypoint>& waypoints, double theta,double TF_Z_BIAS,double vel) 
 {
+    // Transform robot base to camera
+    double transition_rtc[3] = {0.000, 0.000, 0.000};
+    Eigen::MatrixXd tf_robot_to_camera(4, 4);
+    tf_robot_to_camera << -1.0, 0.0, 0.0, transition_rtc[0],
+                          0.0, -1.0, 0.0, transition_rtc[1],
+                          0.0, 0.0, -1.0, transition_rtc[2],
+                          0.0, 0.0, 0.0, 1.0;
+    std::cout << "tf_robot_to_camera.inverse():" << std::endl << tf_robot_to_camera.inverse() << std::endl;
+
     // Transform robot base to workspace
     double transition_p[3] = {420.000, 0.000, -325.827+TF_Z_BIAS};
     double transition_v[3] = {-180, 0, 0};
@@ -59,7 +68,7 @@ void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<
     waypoints.push_back(startPoint);
     for (int i = 0; i < points.size(); i++) {
         Eigen::Vector4d point_matrix(points[i][0], points[i][1], points[i][2], 1.0);
-        Eigen::MatrixXd position_tf = tf_robot_workspace*point_matrix;  
+        Eigen::MatrixXd position_tf = tf_robot_workspace*tf_robot_to_camera.inverse()*point_matrix;  
 
         // Transform vectors to workspace
         double vector_tf[3];
