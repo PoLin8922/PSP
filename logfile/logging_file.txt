@@ -270,4 +270,8 @@
 [End] 
 [Time] 2024-04-02_14-18-36[Start] 
 [End] 
-[Time] 2024-04-16_16-40-47[Start] 
+[Time] 2024-04-16_20-56-08[Start] 
+   [SERVER] Error Sending Path Planning Request
+[End] 
+[Time] 2024-04-16_20-56-46[Start] 
+[End] 
