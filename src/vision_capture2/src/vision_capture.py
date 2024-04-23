@@ -41,7 +41,7 @@ def save_point_cloud_as_pcd():
 
         bounding_box = o3d.geometry.AxisAlignedBoundingBox(
             min_bound=[-0.168, -0.1, 0.3],
-            max_bound=[0.3, 0.075, 0.43]
+            max_bound=[0.3, 0.075, 0.4]
         )
 
         cropped_pcd = pcd.crop(bounding_box)
@@ -61,11 +61,13 @@ def save_point_cloud_as_pcd():
         x_resolution = 0.005 # resolution = 1cm
         current_x = min_x
 
+        # modified ! mean
+
         while current_x < max_x:
             loop_min_x = 100
             for tmp_points in cropped_pcd.points:
                 if tmp_points[0] < current_x + x_resolution and tmp_points[0] >= current_x:
-                    if tmp_points[2] < loop_min_x:
+                    if tmp_points[2] < loop_min_x :
                         loop_min_x = tmp_points[2]
             for tmp_points in cropped_pcd.points:
                 if tmp_points[0] < current_x + x_resolution and tmp_points[0] >= current_x:

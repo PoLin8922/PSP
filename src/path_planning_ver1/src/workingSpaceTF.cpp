@@ -44,7 +44,7 @@ void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<
     std::cout << "tf_robot_to_camera.inverse():" << std::endl << tf_robot_to_camera.inverse() << std::endl;
 
     // Transform robot base to workspace
-    double transition_p[3] = {420.000, 0.000, -325.827+TF_Z_BIAS};
+    double transition_p[3] = {515.000, -27.000, -168.000+TF_Z_BIAS};
     double transition_v[3] = {-180, 0, 0};
 
     theta = theta * (3.1415 / 180);
