@@ -77,9 +77,11 @@ def save_point_cloud_as_pcd():
 
         # o3d.io.write_point_cloud( homeDir + "/PSP/files/point_cloud.pcd", centroid_pcd )
         o3d.io.write_point_cloud("/home/honglang/PSP/files/point_cloud.pcd", cropped_pcd)
+        # for point in cropped_pcd.points:
+        #     print("x:", point[0], "y:", point[1], "z:", point[2])
 
 def capture(req):
-    print("fuck")
+    # print("fuck")
     save_point_cloud_as_pcd()
     if req.scan == True:
         save_point_cloud_as_pcd()

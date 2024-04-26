@@ -17,13 +17,17 @@ void vector2Angle(std::vector<std::vector<double>>& points)
     for (int i = 0; i < points.size(); i++) {
         //double row, pich, yow;
         double row;
+        double limit = 5.0;
         if(!points[i][4] && !points[i][5])
             row = 0;
         else
-            row = std::atan2(-points[i][4], -points[i][5]);
+            row = std::atan2(-points[i][3], -points[i][5]);
         //pich = std::atan2(points[i][3], points[i][5]);
         //yow = std::atan2(points[i][3], points[i][4]);
-        row = row*180.0/M_PI;
+        row = -row*180.0/M_PI;
+        if(row > limit) row = limit;
+        if(row < -limit) row = -limit;
+        printf("row: %f\n", row);
         //pich = pich*180.0/M_PI;
         //yow = yow*180.0/M_PI;
         points[i][3] = row;
@@ -44,7 +48,7 @@ void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<
     std::cout << "tf_robot_to_camera.inverse():" << std::endl << tf_robot_to_camera.inverse() << std::endl;
 
     // Transform robot base to workspace
-    double transition_p[3] = {515.000, -27.000, -168.000+TF_Z_BIAS};
+    double transition_p[3] = {515.000 + 20, -27.000, -168.000+TF_Z_BIAS};
     double transition_v[3] = {-180, 0, 0};
 
     theta = theta * (3.1415 / 180);
