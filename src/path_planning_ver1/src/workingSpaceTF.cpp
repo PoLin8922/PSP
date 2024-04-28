@@ -27,7 +27,7 @@ void vector2Angle(std::vector<std::vector<double>>& points)
         row = -row*180.0/M_PI;
         if(row > limit) row = limit;
         if(row < -limit) row = -limit;
-        printf("row: %f\n", row);
+        //printf("row: %f\n", row);
         //pich = pich*180.0/M_PI;
         //yow = yow*180.0/M_PI;
         points[i][3] = row;
@@ -45,7 +45,7 @@ void workingSpaceTF(const std::vector<std::vector<double>>& points, std::vector<
                           0.0, -1.0, 0.0, transition_rtc[1],
                           0.0, 0.0, -1.0, transition_rtc[2],
                           0.0, 0.0, 0.0, 1.0;
-    std::cout << "tf_robot_to_camera.inverse():" << std::endl << tf_robot_to_camera.inverse() << std::endl;
+    // std::cout << "tf_robot_to_camera.inverse():" << std::endl << tf_robot_to_camera.inverse() << std::endl;
 
     // Transform robot base to workspace
     double transition_p[3] = {515.000 + 20, -27.000, -168.000+TF_Z_BIAS};

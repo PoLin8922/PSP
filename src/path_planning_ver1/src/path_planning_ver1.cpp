@@ -20,13 +20,7 @@ int rounds=5;
 
 int readParameters ()
 {
-    const char *homeDir = getenv ( "HOME" );
-    if ( homeDir == nullptr )
-    {
-        std::cerr << "Failed to get the home directory." << std::endl;
-    }
-
-    std::string filePath = "/home/honglang/PSP/tuning/path.json";
+    std::string filePath = "tuning/path.json";
     std::ifstream file ( filePath );
     if ( !file.is_open() )
     {
@@ -43,7 +37,7 @@ int readParameters ()
     velocity = parameters[ "velocity" ];
     rounds = parameters[ "rounds" ];
     height = parameters[ "height" ];
-    
+                           
     return 1;
 }
 
@@ -51,13 +45,7 @@ void get_path ()
 {
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZRGBA> );
 
-    const char* homeDir = getenv( "HOME" );
-    if ( homeDir == nullptr )
-    {
-        std::cerr << "Failed to get the home directory." << std::endl;
-    }
-
-    std::string pointCloudPath = std::string( homeDir ) + "/PSP/files/point_cloud.pcd";
+    std::string pointCloudPath = "files/point_cloud.pcd";
 
     if ( pcl::io::loadPCDFile<pcl::PointXYZRGBA>( pointCloudPath, *cloud ) == -1 )
     {
@@ -92,12 +80,7 @@ void get_path ()
     vector2Angle( point_cloud );
     workingSpaceTF( point_cloud, waypoints, theta, TF_Z_BIAS, velocity );
 
-    if ( homeDir == nullptr )
-    {
-        std::cerr << "Failed to get the home directory." << std::endl;
-    }
-
-    std::string absfile_path = std::string( homeDir ) + "/PSP/files/H001.LS";
+    std::string absfile_path = "files/H001.LS";
 
     const std::string file_path = "H001.LS";
 

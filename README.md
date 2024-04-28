@@ -12,11 +12,13 @@ roslaunch controller controller.py
 - rosrun individual pkg(exampel rosrun capture)
 ```
 rosrun vision_capture2 vision_capture.py
+rosservice call /vision_capture "scan: true"
 ```
 
-srv:
+- rosrun individual pkg(exampel rosrun path planning)
 ```
-rosservice call /vision_capture "scan: true"
+rosrun path_planning_ver1 path_planning_ver1
+rosservice call /path_planning_ver1 "REQU_PP: true"
 ```
 
 ## system installation

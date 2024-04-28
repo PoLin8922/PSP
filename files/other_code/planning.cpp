@@ -109,8 +109,6 @@ vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud, int
 
     vector<double> startPoint = { 0, 0, -0.3, 0, 0, 0 };
 
-
-
     for ( int i = 0; i <= rounds; i++ )
     {
         float x = max_x - ( shift_distance * i );
@@ -118,9 +116,6 @@ vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud, int
         float low_x = x - CLOUD_SEARCHING_RANGE;
 
         vector<vector<double>> tmp_cloud;
-
-        if (i==0 || i==rounds)  // If it's first or last round, we process it later
-            continue;
 
         for ( int j = 0; j < cloud.size(); j++ )
         {
@@ -133,61 +128,35 @@ vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud, int
         if ( i % 2 == 0 )
         {
             std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisBigToSmall );
-            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.02, tmp_cloud[ 0 ][ 2 ] + 0.03, 0, 0, 0 };
-            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.02, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ] + 0.03, 0, 0, 0 };
+            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.02, tmp_cloud[ 0 ][ 2 ] + 0.01, 0, 0, 0 };
+            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.02, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ] + 0.01, 0, 0, 0 };
             edge_contour.push_back( tmp_cloud.front() );
             edge_contour.push_back( tmp_cloud.back() );
-
-            tmp_cloud.insert(tmp_cloud.begin(),ap_max_y);
-            tmp_cloud.insert(tmp_cloud.end(),ap_min_y);
-
-            for ( auto c : tmp_cloud )
-            {
-                ok_cloud_1.push_back( c );
-            }
-
-            if(i==(rounds-1)){
-                std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisSmallToBig );
-
-                edge_contour.push_back( tmp_cloud.front() );
-                edge_contour.push_back( tmp_cloud.back() );
-
-                for ( auto c : tmp_cloud )
-                {
-                    c[0] = c[0] - shift_distance;
-                    ok_cloud_1.push_back( c );
-                }
-            }
-        }
-        else
-        {
-            std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisSmallToBig );
-            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.02, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ] + 0.03, 0, 0, 0 };
-            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.02, tmp_cloud[ 0 ][ 2 ] + 0.03, 0, 0, 0 };
-            edge_contour.push_back( tmp_cloud.back() );
-            edge_contour.push_back( tmp_cloud.front() );
-
-            tmp_cloud.insert(tmp_cloud.begin(),ap_min_y);
-            tmp_cloud.insert(tmp_cloud.end(),ap_max_y);
-
-            if(i==1){
-                std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisBigToSmall );
-
-                edge_contour.push_back( tmp_cloud.back() );
-                edge_contour.push_back( tmp_cloud.front() );
-
-                for ( auto c : tmp_cloud )
-                {
-                    c[0] = c[0] + shift_distance;
-                    ok_cloud_1.push_back( c );
-                }
-            }
+            ok_cloud_1.push_back( ap_max_y );
 
             for ( auto c : tmp_cloud )
             {
                 ok_cloud_1.push_back( c );
             }
                 
+            ok_cloud_1.push_back( ap_min_y );
+
+        }
+        else
+        {
+            std::sort( tmp_cloud.begin(), tmp_cloud.end(), SortYaxisSmallToBig );
+            vector<double> ap_max_y = { x, max_y + PLASMA_DIA + 0.02, tmp_cloud[ tmp_cloud.size() - 1 ][ 2 ] + 0.01, 0, 0, 0 };
+            vector<double> ap_min_y = { x, min_y - PLASMA_DIA - 0.02, tmp_cloud[ 0 ][ 2 ] + 0.01, 0, 0, 0 };
+            edge_contour.push_back( tmp_cloud.back() );
+            edge_contour.push_back( tmp_cloud.front() );
+            ok_cloud_1.push_back( ap_min_y );
+
+            for ( auto c : tmp_cloud )
+            {
+                ok_cloud_1.push_back( c );
+            }
+                
+            ok_cloud_1.push_back( ap_max_y );
         }
     }
 
