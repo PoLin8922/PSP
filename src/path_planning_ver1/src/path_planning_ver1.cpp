@@ -12,7 +12,6 @@ using json = nlohmann::json;
 
 double DOWN_SAMPLE_SIZE = 0.005;
 double TF_Z_BIAS = 0;
-double height=0.03;
 double velocity = 300;
 double PLASMA_DIA = 0.05;
 double CLOUD_SEARCHING_RANGE = 0.002;
@@ -36,7 +35,6 @@ int readParameters ()
     TF_Z_BIAS = parameters[ "TF_Z_BIAS" ];
     velocity = parameters[ "velocity" ];
     rounds = parameters[ "rounds" ];
-    height = parameters[ "height" ];
                            
     return 1;
 }
@@ -72,7 +70,7 @@ void get_path ()
     {
         point[ 0 ] = point[ 0 ] * 1000;
         point[ 1 ] = point[ 1 ] * 1000;
-        point[ 2 ] = ( point[ 2 ] + height )* 1000;
+        point[ 2 ] = ( point[ 2 ] )* 1000;
     }
 
     std::vector<Waypoint> waypoints;
