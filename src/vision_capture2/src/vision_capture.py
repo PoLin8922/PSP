@@ -57,7 +57,7 @@ def get_boundary( pcd ):
     max_y = np.max(points[:, 1])
 
     point_cloud = o3d.geometry.PointCloud()
-    boundary_cloud = np.array([[min_y, min_x, 0.4], [min_y, max_x, 0.4], [max_y, max_x, 0.4], [max_y, min_x, 0.4], [min_y, min_x, 0.4]])
+    boundary_cloud = np.array([[min_x, min_y, 0.3], [min_x, max_y, 0.3], [max_x, max_y, 0.3], [max_x, min_y, 0.3], [min_x, min_y, 0.3]])
     point_cloud.points = o3d.utility.Vector3dVector(boundary_cloud)
     
     for p in point_cloud.points:
@@ -124,11 +124,15 @@ def capture(req):
         axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=np.zeros(3))
         blue_color = np.array([[0.0, 0.0, 1.0] for _ in range(len(cropped_pcd.points))])
         cropped_pcd.colors = o3d.utility.Vector3dVector(blue_color)
-        scene = [cropped_pcd, axes]
-        o3d.visualization.draw_geometries(scene, window_name="Cropped Point Cloud with XYZ Axes", width=800, height=600)
-        o3d.visualization.draw_geometries([boundary_cloud], window_name="Cropped Point Cloud with XYZ Axes", width=800, height=600)
+
+        # Put the point clouds and axes in a list
+        scene = [cropped_pcd, axes, boundary_cloud]
+
+        # Draw all geometries in the same window
+        o3d.visualization.draw_geometries(scene, window_name="Point Clouds with XYZ Axes", width=800, height=600)
 
         return VisionCaptureResponse(True)
+
 
 if __name__ == '__main__':
     rospy.init_node('vision_capture')
