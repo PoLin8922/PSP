@@ -57,7 +57,7 @@ def get_boundary( pcd ):
     max_y = np.max(points[:, 1])
 
     point_cloud = o3d.geometry.PointCloud()
-    boundary_cloud = np.array([[min_x, min_y, -0.3], [min_x, max_y, -0.3], [max_x, max_y,-0.3], [max_x, min_y, -0.3], [min_x, min_y, -0.3]])
+    boundary_cloud = np.array([[min_x, min_y, -0.4], [min_x, max_y, -0.4], [max_x, max_y,-0.4], [max_x, min_y, -0.4], [min_x, min_y, -0.4]])
     point_cloud.points = o3d.utility.Vector3dVector(boundary_cloud)
     
     #for p in point_cloud.points:

@@ -21,6 +21,13 @@ rosrun path_planning_ver1 path_planning_ver1
 rosservice call /path_planning_ver1 "REQU_PP: true"
 ```
 
+## calibration
+- must run vision capture first!
+- then rosrun:
+```
+rosrun calibration_mode calibration
+```
+
 ## system installation
 - upgrade cmake -> https://blog.csdn.net/qq_36852840/article/details/128338724
 - remember to reinstall ros after remove origin cmake
