@@ -1,7 +1,5 @@
 #include"planning.h"
 
-
-
 bool SortYaxisBigToSmall ( vector<double> a, vector<double> b )
 {
     return a[ 1 ] > b[ 1 ];
@@ -21,35 +19,6 @@ bool customCompare ( const vector<double> &a, const vector<double> &b )
 {
     return a[ 7 ] > b[ 7 ];
 }
-
-/*
-vector<vector<double>> BorderReinforcement ( vector<vector<double>> cloud )
-{
-    open3d::geometry::PointCloud pcd;
-    vector<vector<double>> square_path;
-    vector<vector<double>> contour = edge_contour;
-
-    double center_x = ( contour[ contour.size()-1 ][ 0 ] + contour[ contour.size() - 2 ][ 0 ]) / 2;
-    double center_y = ( contour[ contour.size()-1] [ 1 ] + contour[ contour.size() - 2 ][ 1 ]) / 2;
-    vector<double> center{ center_x, center_y };
-
-    sort( contour.begin(), contour.end(), [&](const vector<double> &a, const vector<double> &b )
-    {
-        return polar_angle ( center, a ) < polar_angle( center, b ); 
-    });
-
-    for( auto& point: contour ) 
-    {
-        point[ 2 ]+=0.03;
-        pcd.points_.push_back( { point[ 0 ], point[ 1 ], point[ 2 ] } );
-    }
-
-    open3d::visualization::DrawGeometries( { make_shared<open3d::geometry::PointCloud>( pcd ) } );
-
-    return contour;
-}
-*/
-
 
 vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud, int rounds, double CLOUD_SEARCHING_RANGE, double PLASMA_DIA )
 {
