@@ -107,10 +107,6 @@ vector<vector<double>> PathCloudFilter ( vector<vector<double>> input_cloud, int
 
     float shift_distance = ( max_x - min_x ) / rounds;
 
-    vector<double> startPoint = { 0, 0, -0.3, 0, 0, 0 };
-
-
-
     for ( int i = 0; i <= rounds; i++ )
     {
         float x = max_x - ( shift_distance * i );

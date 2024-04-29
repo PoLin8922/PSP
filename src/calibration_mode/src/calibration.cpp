@@ -49,10 +49,6 @@ int main()
     // transfer to vector
     vector<vector<double>> path_point_cloud;
 
-    // start point
-    vector<double> startPoint = { 0, 0, -0.3, 0, 0, 0 };
-    path_point_cloud.push_back(startPoint);
-
     for (size_t i = 0; i < cloud->points.size(); ++i)
     {
         std::vector<double> point;
@@ -65,9 +61,6 @@ int main()
 
         path_point_cloud.push_back(point);
     }
-
-    // append end point
-    path_point_cloud.push_back(startPoint);
 
     // print the path_point_cloud
     cout << "path_point_cloud:" << endl;

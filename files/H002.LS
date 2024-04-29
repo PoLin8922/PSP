@@ -26,8 +26,6 @@ CONTROL_CODE     = 00000000 00000000;
    5:L P[5] 300mm/sec CNT100    ;
    6:L P[6] 300mm/sec CNT100    ;
    7:L P[7] 300mm/sec CNT100    ;
-   8:L P[8] 300mm/sec CNT100    ;
-   9:L P[9] 300mm/sec CNT100    ;
 /POS
 P[1]{
    GP1:
@@ -38,46 +36,34 @@ P[1]{
 P[2]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  535.000  mm,    Y =   -27.000  mm,    Z =   132.000  mm,
+    X =  625.467  mm,    Y =   47.519  mm,    Z =   -468.000  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[3]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  625.467  mm,    Y =   47.519  mm,    Z =   -468.000  mm,
+    X =  625.467  mm,    Y =   -64.172  mm,    Z =   -468.000  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[4]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  625.467  mm,    Y =   -64.172  mm,    Z =   -468.000  mm,
+    X =  386.420  mm,    Y =   -64.172  mm,    Z =   -468.000  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[5]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  386.420  mm,    Y =   -64.172  mm,    Z =   -468.000  mm,
+    X =  386.420  mm,    Y =   47.519  mm,    Z =   -468.000  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[6]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  386.420  mm,    Y =   47.519  mm,    Z =   -468.000  mm,
-    W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
-};
-P[7]{
-   GP1:
-    UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
     X =  625.467  mm,    Y =   47.519  mm,    Z =   -468.000  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
-P[8]{
-   GP1:
-    UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  535.000  mm,    Y =   -27.000  mm,    Z =   132.000  mm,
-    W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
-};
-P[9]{
+P[7]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
     X =  420.246  mm,    Y =   0.000  mm,    Z =   53.417  mm,
