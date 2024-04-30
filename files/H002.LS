@@ -20,12 +20,12 @@ DEFAULT_GROUP    = 1,*,*,*,*;
 CONTROL_CODE     = 00000000 00000000;
 /MN
    1:J P[1] 100% FINE    ;
-   2:L P[2] 300mm/sec CNT100    ;
-   3:L P[3] 300mm/sec CNT100    ;
-   4:L P[4] 300mm/sec CNT100    ;
-   5:L P[5] 300mm/sec CNT100    ;
-   6:L P[6] 300mm/sec CNT100    ;
-   7:L P[7] 300mm/sec CNT100    ;
+   2:L P[2] 100mm/sec CNT100    ;
+   3:L P[3] 100mm/sec CNT100    ;
+   4:L P[4] 100mm/sec CNT100    ;
+   5:L P[5] 100mm/sec CNT100    ;
+   6:L P[6] 100mm/sec CNT100    ;
+   7:L P[7] 100mm/sec CNT100    ;
 /POS
 P[1]{
    GP1:
@@ -36,31 +36,31 @@ P[1]{
 P[2]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  596.411  mm,    Y =   66.193  mm,    Z =   -468.000  mm,
+    X =  583.845  mm,    Y =   125.748  mm,    Z =   -175.827  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[3]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  596.411  mm,    Y =   -45.498  mm,    Z =   -468.000  mm,
+    X =  470.156  mm,    Y =   125.748  mm,    Z =   -175.827  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[4]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  357.364  mm,    Y =   -45.498  mm,    Z =   -468.000  mm,
+    X =  470.156  mm,    Y =   -144.576  mm,    Z =   -175.827  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[5]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  357.364  mm,    Y =   66.193  mm,    Z =   -468.000  mm,
+    X =  583.845  mm,    Y =   -144.576  mm,    Z =   -175.827  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[6]{
    GP1:
     UF : 0, UT : 6,      CONFIG : 'N U T, 0, 0, 0',
-    X =  596.411  mm,    Y =   66.193  mm,    Z =   -468.000  mm,
+    X =  583.845  mm,    Y =   125.748  mm,    Z =   -175.827  mm,
     W =  -180.000 deg,    P =   0.000 deg,    R =   0.000 deg
 };
 P[7]{

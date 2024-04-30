@@ -7,6 +7,8 @@ using json = nlohmann::json;
 
 double DOWN_SAMPLE_SIZE = 0.005;
 double TF_Z_BIAS = 0;
+double TF_X_BIAS = 0;
+double TF_Y_BIAS = 0;
 double velocity = 300;
 double PLASMA_DIA = 0.05;
 double CLOUD_SEARCHING_RANGE = 0.002;
@@ -28,134 +30,18 @@ int readParameters ()
 
     PLASMA_DIA = parameters[ "PLASMA_DIA" ];
     TF_Z_BIAS = parameters[ "TF_Z_BIAS" ];
+    TF_X_BIAS = parameters[ "TF_X_BIAS" ];
+    TF_Y_BIAS = parameters[ "TF_Y_BIAS" ];
     velocity = parameters[ "velocity" ];
     rounds = parameters[ "rounds" ];
                            
     return 1;
 }
 
-vector<double> FindCorrectionCenter(vector<vector<double>> cloud)
-{
-    float center_x, center_y, low_z, max_x, min_x, max_y, min_y = 0;
-    max_x = cloud[0][0];
-    for (int i = 0; i < cloud.size(); i++)
-    {
-        if (cloud[i][0] > max_x)
-        {
-            max_x = cloud[i][0];
-        }
-    }
-
-    min_x = cloud[0][0];
-    for (int i = 0; i < cloud.size(); i++)
-    {
-        if (cloud[i][0] < min_x)
-        {
-            min_x = cloud[i][0];
-        }
-    }
-
-    max_y = cloud[0][1];
-    for (int i = 0; i < cloud.size(); i++)
-    {
-        if (cloud[i][1] > max_y)
-        {
-            max_y = cloud[i][1];
-        }
-    }
-
-    min_y = cloud[0][1];
-    for (int i = 0; i < cloud.size(); i++)
-    {
-        if (cloud[i][1] < min_y)
-        {
-            min_y = cloud[i][1];
-        }
-    }
-
-    center_x = (max_x + min_x) / 2;
-    center_y = (max_y + min_y) / 2;
-
-    vector<double> center = {{center_x, center_y, low_z}};
-
-    return center;
-}
-
-vector<vector<double>> OriginCorrectionPointCloud ( vector<vector<double>> cloud )
-{
-    float center_x, center_y, low_z, max_x, min_x, max_y, min_y = 0;
-    max_x = cloud[ 0 ][ 0 ];
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        if ( cloud[ i ][ 0 ] > max_x )
-        {
-            max_x = cloud[ i ][ 0 ];
-        }
-    }
-
-    min_x = cloud[ 0 ][ 0 ];
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        if ( cloud[ i ][ 0 ] < min_x )
-        {
-            min_x = cloud[ i ][ 0 ];
-        }
-    }
-
-    max_y = cloud[ 0 ][ 1 ];
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        if ( cloud[ i ][ 1 ] > max_y )
-        {
-            max_y = cloud[ i ][ 1 ];
-        }
-    }
-
-    min_y = cloud[ 0 ][ 1 ];
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        if ( cloud[ i ][ 1 ] < min_y )
-        {
-            min_y = cloud[ i ][ 1 ];
-        }
-    }
-
-    low_z = cloud[ 0 ][ 2 ];
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        if ( cloud[ i ][ 2 ] < low_z )
-        {
-            low_z = cloud[ i ][ 2 ];
-        }
-    }
-
-    center_x = ( max_x + min_x ) / 2;
-    center_y = ( max_y + min_y ) / 2;
-
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        cloud[ i ][ 0 ] = cloud[ i ][ 0 ] - center_x;
-        cloud[ i ][ 1 ] = cloud[ i ][ 1 ] - center_y;
-        cloud[ i ][ 2 ] = cloud[ i ][ 2 ] - low_z;
-    }
-
-    return cloud;
-}
-
-vector<vector<double>> ResumePointCloudFromOrigin ( vector<vector<double>> cloud, vector<double> center )
-{
-    for ( int i = 0; i < cloud.size(); i++ )
-    {
-        cloud[ i ][ 0 ] = cloud[ i ][ 0 ] + center[0];
-        cloud[ i ][ 1 ] = cloud[ i ][ 1 ] + center[1];
-        cloud[ i ][ 2 ] = cloud[ i ][ 2 ] + center[2];
-    }
-
-    return cloud;
-}
-
 int main()
 {
+    readParameters ();
+
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGBA>);
 
     std::string pointCloudPath = "files/boundary_cloud.pcd";
@@ -204,7 +90,7 @@ int main()
     std::vector<Waypoint> waypoints;
     double theta = 0;
     vector2Angle( path_point_cloud );
-    workingSpaceTF( path_point_cloud, waypoints, theta, 0, velocity );
+    workingSpaceTF( path_point_cloud, waypoints, theta, TF_Z_BIAS, TF_X_BIAS, TF_Y_BIAS, velocity );
 
     std::string absfile_path = "files/H002.LS";
 

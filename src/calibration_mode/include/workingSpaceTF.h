@@ -21,7 +21,7 @@ void vector2Angle(std::vector<std::vector<double>>& points);
 
 void workingSpaceTF(const std::vector<std::vector<double>>& points, 
                     std::vector<Waypoint>& waypoints, 
-                    double theta,double TF_Z_BIAS,double vel
+                    double theta,double TF_Z_BIAS, double TF_X_BIAS,double TF_Y_BIAS,double vel
                    );
 
 int writeLsFile(const std::string& absfile, 

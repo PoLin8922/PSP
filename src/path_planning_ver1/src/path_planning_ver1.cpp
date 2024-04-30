@@ -12,9 +12,11 @@ using json = nlohmann::json;
 
 double DOWN_SAMPLE_SIZE = 0.005;
 double TF_Z_BIAS = 0;
+double TF_X_BIAS = 0;
+double TF_Y_BIAS = 0;
 double velocity = 300;
 double PLASMA_DIA = 0.05;
-double CLOUD_SEARCHING_RANGE = 0.002;
+double CLOUD_SEARCHING_RANGE = 0.0022;
 int rounds=5;
 
 int readParameters ()
@@ -33,6 +35,8 @@ int readParameters ()
 
     PLASMA_DIA = parameters[ "PLASMA_DIA" ];
     TF_Z_BIAS = parameters[ "TF_Z_BIAS" ];
+    TF_X_BIAS = parameters[ "TF_X_BIAS" ];
+    TF_Y_BIAS = parameters[ "TF_Y_BIAS" ];
     velocity = parameters[ "velocity" ];
     rounds = parameters[ "rounds" ];
                            
@@ -73,7 +77,7 @@ void get_path ()
     std::vector<Waypoint> waypoints;
     double theta = 0;
     vector2Angle( point_cloud );
-    workingSpaceTF( point_cloud, waypoints, theta, TF_Z_BIAS, velocity );
+    workingSpaceTF( point_cloud, waypoints, theta, TF_Z_BIAS, TF_X_BIAS, TF_Y_BIAS, velocity );
 
     std::string absfile_path = "files/H001.LS";
 
