@@ -182,10 +182,6 @@ int main()
         path_point_cloud.push_back(point);
     }
 
-    vector<double> center = FindCorrectionCenter( path_point_cloud );
-    vector<vector<double>> correction_cloud = OriginCorrectionPointCloud( path_point_cloud );
-    path_point_cloud = ResumePointCloudFromOrigin ( path_point_cloud, center );
-
     // print the path_point_cloud
     cout << "path_point_cloud:" << endl;
     for (size_t i = 0; i < path_point_cloud.size(); ++i)
