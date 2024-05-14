@@ -37,7 +37,7 @@ int Read_val(modbus_t* ctx, uint16_t address) {
         exit(1);
     }
 
-    printf("Register Address : %d, Value: %d\n", address, read_data[0]);
+    // printf("Register Address : %d, Value: %d\n", address, read_data[0]);
     return read_data[0];
 }
 

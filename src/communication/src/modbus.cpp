@@ -72,39 +72,6 @@ int main() {
     usleep(500);
     Read_val(ctx, START_ADDRESS);
 
-    /* execute new tp program 
-    /*execute = true;
-    if (execute) Set_DIval(ctx, START_ADDRESS, 1);*/
-
-    /* wait manipulate set DO[1] to ON */
-    // Sleep(500);
-    
-    /* wait manipulater finish tp program and set DI[1] to off */
-    /*while(0){
-        // read registers
-        uint16_t read_data[QUANTITY] = { 0 };
-        int rc = modbus_read_input_registers(ctx, START_ADDRESS, QUANTITY, read_data);
-        if (rc == -1) {
-            fprintf(stderr, "modbus_read_registers error: %s\n", modbus_strerror(errno));
-            modbus_close(ctx);
-            modbus_free(ctx);
-            exit(1);
-        }
-
-        if (read_data[0] == 1) {
-            Set_DIval(ctx, 0);
-            break;
-        }
-
-        for (int i = 0; i < QUANTITY; i++) {
-            printf("Register %d value: %d\n", START_ADDRESS + i, read_data[i]);
-        }
-        printf("---------------\n");
-
-        //scan frequency
-        Sleep(500); 
-    }*/
-
     modbus_close(ctx);
     modbus_free(ctx); 
 

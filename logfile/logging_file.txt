@@ -363,3 +363,62 @@
 [End] 
 [Time] 2024-04-26_16-06-54[Start] 
 [End] 
+[Time] 2024-05-07_15-25-32[Start] 
+[Time] 2024-05-07_15-28-10[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+[Time] 2024-05-07_15-28-43[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Execute FUNUC Request
+[End] 
+[Time] 2024-05-07_15-29-59[Start] 
+[Time] 2024-05-07_15-30-21[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+[Time] 2024-05-07_15-33-39[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+[Time] 2024-05-07_15-34-45[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+[Time] 2024-05-07_15-36-14[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+[Time] 2024-05-07_15-41-40[Start] 
+   [SERVER] Error Sending Path Planning Request
+[End] 
+[Time] 2024-05-07_15-43-07[Start] 
+[Time] 2024-05-07_15-44-13[Start] 
+[Time] 2024-05-07_15-45-33[Start] 
+[End] 
+[Time] 2024-05-07_15-47-24[Start] 
+[End] 
+[Time] 2024-05-07_16-02-02[Start] 
+[End] 
+[Time] 2024-05-07_16-15-53[Start] 
+[Time] 2024-05-07_16-36-54[Start] 
+   [SERVER] Error Sending Vision Capture Request
+[Time] 2024-05-07_16-37-35[Start] 
+[Time] 2024-05-07_16-38-02[Start] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Vision Capture Request
+[Time] 2024-05-07_16-38-39[Start] 
+[End] 
+[Time] 2024-05-07_16-40-27[Start] 
+[End] 
+[Time] 2024-05-07_16-43-05[Start] 
+[End] 
+[Time] 2024-05-07_16-44-35[Start] 
+[End] 
+[Time] 2024-05-07_16-46-37[Start] 
+[End] 
+[Time] 2024-05-07_16-48-06[Start] 
+[End] 
+[Time] 2024-05-14_14-58-15[Start] 
+[Time] 2024-05-14_14-58-31[Start] 
+[End] 
+[Time] 2024-05-14_15-00-53[Start] 
+[End] 
+[Time] 2024-05-14_15-02-34[Start] 
+[End] 

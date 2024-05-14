@@ -13,7 +13,6 @@
 #define QUANTITY 64  
 #define START_ADDRESS 51 
 
-bool execute = false;
 modbus_t* ctx; 
 
 void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {

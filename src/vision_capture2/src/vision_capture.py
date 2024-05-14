@@ -43,9 +43,9 @@ def save_point_cloud_as_pcd():
         
         filtered_pcd = average_z_filter_for_x_direction(cropped_pcd)
 
-        open("files/point_cloud.pcd", "w").close()
+        open("/home/honglang/PSP/files/point_cloud.pcd", "w").close()
 
-        o3d.io.write_point_cloud("files/point_cloud.pcd", filtered_pcd)
+        o3d.io.write_point_cloud("/home/honglang/PSP/files/point_cloud.pcd", filtered_pcd)
 
 
 def get_boundary( pcd ):
@@ -66,7 +66,7 @@ def get_boundary( pcd ):
     for p in point_cloud.points:
         print("x:", p[0], "y:", p[1], "z:", p[2])
 
-    o3d.io.write_point_cloud("files/boundary_cloud.pcd", point_cloud)
+    o3d.io.write_point_cloud("/home/honglang/PSP/files/boundary_cloud.pcd", point_cloud)
 
 def average_z_filter_for_x_direction(cropped_pcd):
     filtered_pcd = o3d.geometry.PointCloud()
@@ -117,11 +117,11 @@ def capture(req):
         
         save_point_cloud_as_pcd()
         
-        cropped_pcd = o3d.io.read_point_cloud("files/point_cloud.pcd")
+        cropped_pcd = o3d.io.read_point_cloud("/home/honglang/PSP/files/point_cloud.pcd")
 
         get_boundary( cropped_pcd )
 
-        boundary_cloud = o3d.io.read_point_cloud("files/boundary_cloud.pcd")
+        boundary_cloud = o3d.io.read_point_cloud("/home/honglang/PSP/files/boundary_cloud.pcd")
 
         # visualize
         axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=np.zeros(3))

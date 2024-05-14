@@ -21,7 +21,7 @@ int rounds=5;
 
 int readParameters ()
 {
-    std::string filePath = "tuning/path.json";
+    std::string filePath = "/home/honglang/PSP/tuning/path.json";
     std::ifstream file ( filePath );
     if ( !file.is_open() )
     {
@@ -47,7 +47,7 @@ void get_path ()
 {
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZRGBA> );
 
-    std::string pointCloudPath = "files/point_cloud.pcd";
+    std::string pointCloudPath = "/home/honglang/PSP/files/point_cloud.pcd";
 
     if ( pcl::io::loadPCDFile<pcl::PointXYZRGBA>( pointCloudPath, *cloud ) == -1 )
     {
@@ -79,7 +79,7 @@ void get_path ()
     vector2Angle( point_cloud );
     workingSpaceTF( point_cloud, waypoints, theta, TF_Z_BIAS, TF_X_BIAS, TF_Y_BIAS, velocity );
 
-    std::string absfile_path = "files/H001.LS";
+    std::string absfile_path = "/home/honglang/PSP/files/H001.LS";
 
     const std::string file_path = "H001.LS";
 
