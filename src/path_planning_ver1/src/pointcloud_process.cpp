@@ -1,5 +1,7 @@
 #include"pointcloud_process.h"
 
+bool debug = true;
+
 bool isNearEdge ( vector<double> point, double &refer_height, vector<vector<double>> edge_contour )
 {
     
@@ -10,7 +12,7 @@ bool isNearEdge ( vector<double> point, double &refer_height, vector<vector<doub
             return true;
         }
     }
-
+    
     return false;
 }
 
@@ -88,7 +90,7 @@ vector<vector<double>> estimateNormals ( pcl::PointCloud<pcl::PointXYZRGBA>::Ptr
     vector<shared_ptr<const open3d::geometry::Geometry>> geometries;
     geometries.push_back( make_shared<const open3d::geometry::PointCloud>( o3dCloud ) );
 
-    open3d::visualization::DrawGeometries(geometries, "result", 800, 800, 50, 50, true);
+    if(debug) open3d::visualization::DrawGeometries(geometries, "result", 800, 800, 50, 50, true);
 
     return vectors;
 }

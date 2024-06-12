@@ -46,7 +46,7 @@ bool modbusControlCallback(communication::ModbusRobot::Request &req,
     if (req.start) {
         /* execute new tp program */
         while(Read_val(ctx, START_ADDRESS) == 0){
-            printf("set DI on\n");
+            // printf("I on\n");
             Set_val(ctx, START_ADDRESS, 1);
             usleep(500);
         }

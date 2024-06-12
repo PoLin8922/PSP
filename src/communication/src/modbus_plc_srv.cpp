@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "ros/ros.h"
 #include "communication/ModbusPLC.h" 
+#include <std_msgs/Int32.h>
 
 /* PLC */
 #define SERVER_ADDRESS "192.168.50.30"  
@@ -14,6 +15,7 @@
 #define START_ADDRESS 51 
 
 modbus_t* ctx; 
+bool semaphore = false;
 
 void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {
     uint16_t output_data[QUANTITY] = { 0 };
@@ -37,12 +39,13 @@ int Read_val(modbus_t* ctx, uint16_t address) {
         exit(1);
     }
 
-    printf("Register Address : %d, Value: %d\n", address, read_data[0]);
+    // printf("Register Address : %d, Value: %d\n", address, read_data[0]);
     return read_data[0];
 }
 
 bool modbusControlCallback(communication::ModbusPLC::Request &req,
                           communication::ModbusPLC::Response &res) {
+    semaphore = false;
     if(req.setnum >= 0){
         Set_val(ctx, START_ADDRESS, req.setnum);
         res.success = true;
@@ -50,6 +53,8 @@ bool modbusControlCallback(communication::ModbusPLC::Request &req,
     else {
         res.success = false;
     }
+
+    semaphore = true;
 
     return true;
 }
@@ -76,10 +81,23 @@ int main(int argc, char **argv) {
 
     // Create a ROS service for modbus control
     ros::ServiceServer service = nh.advertiseService("modbus_plc_control", modbusControlCallback);
-    ROS_INFO("Ready to control manipulator via Modbus.");
+    ros::Publisher plc_state_pub = nh.advertise<std_msgs::Int32>("plc_state", 10);
+    ROS_INFO("Ready to control PLC via Modbus.");
 
     // Spin ROS node
-    ros::spin();
+
+    semaphore = true;
+    ros::Rate loop_rate(10);
+    while (ros::ok()) {
+        if(semaphore){
+            std_msgs::Int32 msg;
+            msg.data = Read_val(ctx, START_ADDRESS);
+            plc_state_pub.publish(msg);
+            // ROS_INFO("Published: %d", msg.data);
+        }
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
 
     // Close modbus connection and free context
     modbus_close(ctx);

@@ -58,13 +58,13 @@ def get_boundary( pcd ):
     min_z = np.min(points[:, 2])
 
     point_cloud = o3d.geometry.PointCloud()
-    print(points)
+    #print(points)
     boundary_cloud = np.array([[min_x, min_y, min_z], [min_x, max_y, min_z], [max_x, max_y, min_z], [max_x, min_y, min_z], [min_x, min_y, min_z]])
     #boundary_cloud = np.array([[min_x, min_y, 0.3], [min_x, max_y, 0.3]])
     point_cloud.points = o3d.utility.Vector3dVector(boundary_cloud)
     
-    for p in point_cloud.points:
-        print("x:", p[0], "y:", p[1], "z:", p[2])
+    #for p in point_cloud.points:
+    #    print("x:", p[0], "y:", p[1], "z:", p[2])
 
     o3d.io.write_point_cloud("/home/honglang/PSP/files/boundary_cloud.pcd", point_cloud)
 

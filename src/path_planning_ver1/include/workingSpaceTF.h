@@ -17,6 +17,8 @@ struct Waypoint
 
 void initializeWaypoints(Waypoint *waypoint,double V);
 
+void zBiasWithNormal(std::vector<std::vector<double>> &points, double TF_Z_BIAS);
+
 void vector2Angle(std::vector<std::vector<double>>& points);
 
 void workingSpaceTF(const std::vector<std::vector<double>>& points, 

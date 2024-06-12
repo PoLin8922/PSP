@@ -422,3 +422,13 @@
 [End] 
 [Time] 2024-05-14_15-02-34[Start] 
 [End] 
+[Time] 2024-06-12_11-39-57[Start] 
+[End] 
+[Time] 2024-06-12_11-41-31[Start] 
+[End] 
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Path Planning Request

@@ -64,6 +64,9 @@ void get_path ()
     vector<vector<double>> cloud_w_vector = estimateNormals( downsampledCloud );
     vector<double> center = FindCorrectionCenter( cloud_w_vector );
     vector<vector<double>> correction_cloud = OriginCorrectionPointCloud( cloud_w_vector );
+
+    //zBiasWithNormal(correction_cloud, TF_Z_BIAS);
+
     std::vector<std::vector<double>> path_point_cloud = PathPlanning( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
     std::vector<std::vector<double>> point_cloud = ResumePointCloudFromOrigin ( path_point_cloud, center );
 
@@ -111,7 +114,6 @@ bool server_callback ( path_planning_ver1::path_planning_ver1::Request &req,
 
 int main ( int argc, char **argv )
 {
-    readParameters();
     //get_path();
 
     ros::init( argc, argv, "path_planning_ver1" );
@@ -123,6 +125,7 @@ int main ( int argc, char **argv )
     {
         loop_rate.sleep();
         ros::spinOnce();
+        readParameters();
     }
 
     return 0;

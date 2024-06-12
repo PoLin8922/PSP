@@ -56,10 +56,6 @@ target_link_libraries(modbus_plc_srv
     ${LIBMODBUS_LIBRARY}  
 )
 
-add_executable(plc_state_pub src/plc_state_pub.cpp)
-target_link_libraries(plc_state_pub
-    ${catkin_LIBRARIES}
-    ${LIBMODBUS_LIBRARY}  
-)
+
 
 

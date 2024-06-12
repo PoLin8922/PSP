@@ -89,7 +89,7 @@ int main()
 
     std::vector<Waypoint> waypoints;
     double theta = 0;
-    vector2Angle( path_point_cloud );
+    vector2Angle( path_point_cloud, TF_Z_BIAS );
     workingSpaceTF( path_point_cloud, waypoints, theta, TF_Z_BIAS, TF_X_BIAS, TF_Y_BIAS, velocity );
 
     std::string absfile_path = "files/H002.LS";

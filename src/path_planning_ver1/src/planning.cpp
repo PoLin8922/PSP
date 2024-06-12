@@ -1,5 +1,7 @@
 #include "planning.h"
 
+bool visual = true;
+
 bool SortXaxisBigToSmall(vector<double> a, vector<double> b)
 {
     return a[0] > b[0];
@@ -183,13 +185,15 @@ vector<vector<double>> PathPlanning(vector<vector<double>> cloud, int rounds, do
     open3d::geometry::PointCloud filtered_open3d_cloud = open3d_cloud; // Perform your filtering operation here
 
     // Visualize the filtered point cloud
-    open3d::visualization::Visualizer visualizer;
-    visualizer.CreateVisualizerWindow("Open3D Point Cloud", 800, 800);
+    if(visual){
+        open3d::visualization::Visualizer visualizer;
+        visualizer.CreateVisualizerWindow("Open3D Point Cloud", 800, 800);
 
-    std::shared_ptr<const open3d::geometry::Geometry> filtered_geometry_ptr = std::make_shared<const open3d::geometry::PointCloud>(filtered_open3d_cloud);
-    visualizer.AddGeometry(filtered_geometry_ptr);
-    visualizer.Run();
-    visualizer.DestroyVisualizerWindow();
+        std::shared_ptr<const open3d::geometry::Geometry> filtered_geometry_ptr = std::make_shared<const open3d::geometry::PointCloud>(filtered_open3d_cloud);
+        visualizer.AddGeometry(filtered_geometry_ptr);
+        visualizer.Run();
+        visualizer.DestroyVisualizerWindow();
+    }
 
     return filtered_cloud;
 }
