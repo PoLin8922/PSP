@@ -25,34 +25,42 @@ bool customCompare(const vector<double> &a, const vector<double> &b)
 // prevent the reciprocating path problem
 void average_cloud( vector<vector<double>>& input_cloud, int direction)
 {
-    if(direction == 0)  // x
+    if(direction == 0)  // y
     {
-        float sum = 0;
+        float sum_y = 0;
+        
         for( int i=0; i<input_cloud.size(); i++)
         {
-            sum += input_cloud[i][1];
+            sum_y += input_cloud[i][1];
+            
         }
 
-        float x = sum / input_cloud.size();
+        float x = sum_y / input_cloud.size();
+        
         
         for(int i=0; i<input_cloud.size(); i++)
         {
             input_cloud[i][1] = x;
+            
         }
     }
-    else
+    else    // x
     {
-        float sum = 0;
+        float sum_x = 0;
+        float sum_z = 0;
         for( int i=0; i<input_cloud.size(); i++)
         {
-            sum += input_cloud[i][0];
+            sum_x += input_cloud[i][0];
+            sum_z += input_cloud[i][2];
         }
 
-        float y = sum / input_cloud.size();
+        float y = sum_x / input_cloud.size();
+        float z = sum_z / input_cloud.size();
         
         for(int i=0; i<input_cloud.size(); i++)
         {
             input_cloud[i][0] = y;
+            input_cloud[i][2] = z;
         }
     }
 }
