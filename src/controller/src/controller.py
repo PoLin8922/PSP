@@ -92,15 +92,15 @@ class controller ():
             self.LOGGING(   "   [SERVER] Error Writing PLC Request" )
 
     def run(self):
-        # if self.plcState == 1:
+        if self.plcState == 1:
             print("funuc start moving")
             time.sleep(1)
             self.capture(True)
             self.planning(True)
             self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
-            # self.plcControl(0)
-            # self.fanucStart(True)
-            # self.plcControl(2)
+            self.plcControl(0)
+            self.fanucStart(True)
+            self.plcControl(2)
             print("funuc stop moving")
 
     def LOGGING ( self, state ):

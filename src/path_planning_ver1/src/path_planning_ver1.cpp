@@ -10,14 +10,15 @@
 using namespace std;
 using json = nlohmann::json;
 
-double DOWN_SAMPLE_SIZE = 0.005;
+double DOWN_SAMPLE_SIZE = 0.003;
 double TF_Z_BIAS = 0;
 double TF_X_BIAS = 0;
 double TF_Y_BIAS = 0;
 double velocity = 300;
 double PLASMA_DIA = 0.05;
-double CLOUD_SEARCHING_RANGE = 0.0022;
+double CLOUD_SEARCHING_RANGE = 0.0013;
 int rounds=5;
+int mode = 0;
 
 int readParameters ()
 {
@@ -33,6 +34,7 @@ int readParameters ()
     file >> parameters;
     file.close();
 
+    mode = parameters[ "mode" ]; // mode=0 -> long, mode=1 -> short
     PLASMA_DIA = parameters[ "PLASMA_DIA" ];
     TF_Z_BIAS = parameters[ "TF_Z_BIAS" ];
     TF_X_BIAS = parameters[ "TF_X_BIAS" ];
@@ -66,8 +68,23 @@ void get_path ()
     vector<vector<double>> correction_cloud = OriginCorrectionPointCloud( cloud_w_vector );
 
     //zBiasWithNormal(correction_cloud, TF_Z_BIAS);
+    std::vector<std::vector<double>> path_point_cloud;
 
-    std::vector<std::vector<double>> path_point_cloud = PathPlanning( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
+    if(mode == 0)
+    {
+        path_point_cloud = PathPlanning( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
+    }
+    else if(mode == 1)
+    {
+        path_point_cloud = PathPlanning_short( correction_cloud, rounds, CLOUD_SEARCHING_RANGE, PLASMA_DIA );
+    }
+    else
+    {
+        std::cout << "[ERROR] mode error, please checkout the json setting " << std::endl;
+
+        // must shutdown the workflow !
+    }
+    
     std::vector<std::vector<double>> point_cloud = ResumePointCloudFromOrigin ( path_point_cloud, center );
 
     for ( auto &point : point_cloud )
