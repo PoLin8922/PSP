@@ -17,6 +17,42 @@
 modbus_t* ctx; 
 bool semaphore = false;
 
+void modnus_restore(){
+    printf("restore modbus\n");
+
+    /* reset modbus tcp */
+    modbus_close(ctx);
+    modbus_free(ctx);
+
+    ctx = modbus_new_tcp(SERVER_ADDRESS, SERVER_PORT);
+    if (ctx == NULL) {
+        fprintf(stderr, "modbus_new_tcp error\n");
+        exit(1);
+    }
+
+    modbus_set_slave(ctx, SLAVE_ID);
+
+    // Connect to manipulator
+    int retry_count = 5;
+    while (retry_count > 0) {
+        if (modbus_connect(ctx) == -1) {
+            fprintf(stderr, "modbus_connect error: %s\n", modbus_strerror(errno));
+            retry_count--;
+            usleep(1000 * 1000);  // wait 1 second before retrying
+        } else {
+            break;
+        }
+    }
+
+    if (retry_count == 0) {
+        fprintf(stderr, "modbus_connect failed after multiple attempts\n");
+        modbus_free(ctx);
+        exit(1);
+    }
+
+    printf("restore success\n");
+}
+
 void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {
     uint16_t output_data[QUANTITY] = { 0 };
     output_data[0] = val;
@@ -31,12 +67,14 @@ void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {
 
 int Read_val(modbus_t* ctx, uint16_t address) {
     uint16_t read_data[QUANTITY] = { 0 };
+    usleep(500);
     int rc = modbus_read_registers(ctx, address, QUANTITY, read_data);
     if (rc == -1) {
         fprintf(stderr, "modbus_read_registers error: %s\n", modbus_strerror(errno));
-        modbus_close(ctx);
-        modbus_free(ctx);
-        exit(1);
+        modnus_restore();
+        // modbus_close(ctx);
+        // modbus_free(ctx);
+        // exit(1);
     }
 
     // printf("Register Address : %d, Value: %d\n", address, read_data[0]);
@@ -46,6 +84,7 @@ int Read_val(modbus_t* ctx, uint16_t address) {
 bool modbusControlCallback(communication::ModbusPLC::Request &req,
                           communication::ModbusPLC::Response &res) {
     semaphore = false;
+    usleep(500);
     if(req.setnum >= 0){
         Set_val(ctx, START_ADDRESS, req.setnum);
         res.success = true;
@@ -55,6 +94,7 @@ bool modbusControlCallback(communication::ModbusPLC::Request &req,
     }
 
     semaphore = true;
+    usleep(500);
 
     return true;
 }
@@ -87,9 +127,13 @@ int main(int argc, char **argv) {
     // Spin ROS node
 
     semaphore = true;
+    usleep(500);
+
     ros::Rate loop_rate(10);
     while (ros::ok()) {
         if(semaphore){
+    usleep(500);
+
             std_msgs::Int32 msg;
             msg.data = Read_val(ctx, START_ADDRESS);
             plc_state_pub.publish(msg);

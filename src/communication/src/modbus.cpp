@@ -9,18 +9,18 @@
 
 /* ROBOGUIDE */
 //#define SERVER_ADDRESS "127.0.0.1" 
-#define SERVER_ADDRESS "192.168.255.200" 
-#define SERVER_PORT 502 
-#define SLAVE_ID 1       
-#define QUANTITY 4
-#define START_ADDRESS 0
+// #define SERVER_ADDRESS "192.168.255.200" 
+// #define SERVER_PORT 502 
+// #define SLAVE_ID 1       
+// #define QUANTITY 4
+// #define START_ADDRESS 0
 
 /* PLC */
-//#define SERVER_ADDRESS "192.168.50.30"  
-//#define SERVER_PORT 501  
-//#define SLAVE_ID 1       
-//#define QUANTITY 64  
-//#define START_ADDRESS 0 
+#define SERVER_ADDRESS "192.168.50.30"  
+#define SERVER_PORT 501  
+#define SLAVE_ID 1       
+#define QUANTITY 64  
+#define START_ADDRESS 51
    
 bool execute = false;
 
@@ -68,7 +68,7 @@ int main() {
     } 
 
     /* Simple test*/
-    Set_val(ctx, START_ADDRESS, 0);
+    Set_val(ctx, START_ADDRESS, 2);
     usleep(500);
     Read_val(ctx, START_ADDRESS);
 

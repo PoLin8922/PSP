@@ -18,6 +18,7 @@ modbus_t* ctx;
 void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {
     uint16_t output_data[QUANTITY] = { 0 };
     output_data[0] = val;
+    usleep(100);
     int rc = modbus_write_registers(ctx, address, QUANTITY, output_data);
     if (rc == -1) {
         fprintf(stderr, "modbus_write_registers error: %s\n", modbus_strerror(errno));
@@ -29,6 +30,8 @@ void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {
 
 int Read_val(modbus_t* ctx, uint16_t address) {
     uint16_t read_data[QUANTITY] = { 0 };
+    usleep(1000);
+
     int rc = modbus_read_input_registers(ctx, address, QUANTITY, read_data);
     if (rc == -1) {
         fprintf(stderr, "modbus_read_registers error: %s\n", modbus_strerror(errno));

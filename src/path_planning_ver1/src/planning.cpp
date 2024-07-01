@@ -12,6 +12,16 @@ bool SortXaxisSmallToBig(vector<double> a, vector<double> b)
     return a[0] < b[0];
 }
 
+bool SortYaxisBigToSmall(vector<double> a, vector<double> b)
+{
+    return a[1] > b[1];
+}
+
+bool SortYaxisSmallToBig(vector<double> a, vector<double> b)
+{
+    return a[1] < b[1];
+}
+
 double polar_angle(vector<double> center, vector<double> p)
 {
     return atan2(p[1] - center[1], p[0] - center[0]);
@@ -259,7 +269,7 @@ vector<vector<double>> PathCloudFilter_short(vector<vector<double>> input_cloud,
 
         if (i % 2 == 0)
         {
-            std::sort(tmp_cloud.begin(), tmp_cloud.end(), SortXaxisBigToSmall);
+            std::sort(tmp_cloud.begin(), tmp_cloud.end(), SortYaxisBigToSmall);
             vector<double> ap_max_y = {x, max_y + PLASMA_DIA + 0.02, tmp_cloud[0][2] +0.01, 0, 0, 0};
             vector<double> ap_min_y = {x, min_y - PLASMA_DIA - 0.02, tmp_cloud[tmp_cloud.size() - 1][2] +0.01, 0, 0, 0};
             edge_contour.push_back(tmp_cloud.back());
@@ -275,7 +285,7 @@ vector<vector<double>> PathCloudFilter_short(vector<vector<double>> input_cloud,
         }
         else
         {
-            std::sort(tmp_cloud.begin(), tmp_cloud.end(), SortXaxisSmallToBig);
+            std::sort(tmp_cloud.begin(), tmp_cloud.end(), SortYaxisSmallToBig);
             vector<double> ap_max_y = {x, max_y + PLASMA_DIA + 0.02, tmp_cloud[tmp_cloud.size() - 1][2] +0.01, 0, 0, 0};
             vector<double> ap_min_y = {x, min_y - PLASMA_DIA - 0.02, tmp_cloud[0][2] +0.01, 0, 0, 0};
             edge_contour.push_back(tmp_cloud.back());

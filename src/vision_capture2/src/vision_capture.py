@@ -134,7 +134,15 @@ def capture(req):
         # Draw all geometries in the same window
         o3d.visualization.draw_geometries(scene, window_name="Point Clouds with XYZ Axes", width=800, height=600)
 
-        return VisionCaptureResponse(True)
+        num_point = len(cropped_pcd.points)
+        print("haha", num_point)
+
+        num_threshold = 18000
+        
+        if len(cropped_pcd.points) >= num_threshold:
+            return VisionCaptureResponse(True)
+        else:
+            return VisionCaptureResponse(False)
 
 
 if __name__ == '__main__':

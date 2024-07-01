@@ -16,7 +16,7 @@ double TF_X_BIAS = 0;
 double TF_Y_BIAS = 0;
 double velocity = 300;
 double PLASMA_DIA = 0.05;
-double CLOUD_SEARCHING_RANGE = 0.0012;
+double CLOUD_SEARCHING_RANGE = 0.0014;
 int rounds=5;
 int mode = 0;
 

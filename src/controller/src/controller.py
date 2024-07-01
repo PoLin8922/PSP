@@ -33,10 +33,14 @@ class controller ():
 
         try:
             response = self.capture_proxy( request )
-            if response:
+            if response.scan_state:
                 print( '\033[94m' + "[SERVER] Vision Capture Successfully Completed." + '\033[0m' )
                 request = False
-        
+                return True
+            else:
+                request = False
+                return False
+                        
         except rospy.ServiceException as e:
             print( '\033[91m' + " [SERVER] Error Sending Vision Capture Request." +  '\033[0m' )
             self.LOGGING(   "   [SERVER] Error Sending Vision Capture Request" )
@@ -61,10 +65,20 @@ class controller ():
             response = self.ftp_proxy(host, path)
             if response:
                 print( '\033[94m' + "[SERVER] Transfer LS File to funuc Successfully Completed." + '\033[0m' )
-
+                
         except rospy.ServiceException as e:
             print( '\033[91m' + " [SERVER] Error Transfer LS File Request." +  '\033[0m' )
             self.LOGGING(   "   [SERVER] Error Transfer LS File Request" )
+            self.plcControl(5)
+            retry_num = 3
+            while not response and retry_num:
+                response = self.ftp_proxy(host, path)
+                retry_num -=1
+            if not retry_num:
+                print("Transfer LS File error")
+            else:
+                self.plcControl(1)
+
 
     def fanucStart(self, request):
         rospy.wait_for_service('modbus_robot_control')
@@ -78,30 +92,51 @@ class controller ():
             print( '\033[91m' + " [SERVER] Error Execute FUNUC Request." +  '\033[0m' )
             self.LOGGING(   "   [SERVER] Error Execute FUNUC Request" )
 
+            self.plcControl(5)
+            retry_num = 3
+            while not response and retry_num:
+                response = self.funuc_proxy(request)
+                retry_num -=1
+            if not retry_num:
+                print("Execute FUNUC error")
+            else:
+                self.plcControl(1)
 
-    def plcControl(self, setnum):  
+    def plcControl(self, request):
         rospy.wait_for_service('modbus_plc_control')
 
         try:
-            response = self.plc_proxy(setnum)
+            response = self.plc_proxy(request)
             if response:
-                print( '\033[94m' + "[SERVER] Writing PLC Successfully Completed." + '\033[0m' )
+                print( '\033[94m' + "[SERVER] Set PLC Successfully Completed." + '\033[0m' )
         
         except rospy.ServiceException as e:
-            print( '\033[91m' + " [SERVER] Error Writing PLC Request." +  '\033[0m' )
-            self.LOGGING(   "   [SERVER] Error Writing PLC Request" )
+            print( '\033[91m' + " [SERVER] Error Set PLC Request." +  '\033[0m' )
+            self.LOGGING(   "   [SERVER] Error Set PLC Request" )
+            self.plcControl(5)
+            retry_num = 3
+            while not response and retry_num:
+                response = self.plc_proxy(request)
+                retry_num -=1
+            if not retry_num:
+                print("Set PLC error")
+            else:
+                self.plcControl(1)
 
     def run(self):
         if self.plcState == 1:
             print("funuc start moving")
             time.sleep(1)
-            self.capture(True)
-            self.planning(True)
-            self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
-            self.plcControl(0)
-            self.fanucStart(True)
-            self.plcControl(2)
-            print("funuc stop moving")
+            if not self.capture(True):
+                self.plcControl(4)
+            else:
+                self.planning(True)
+                self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
+                self.plcControl(8)
+                self.fanucStart(True)
+                self.plcControl(2)
+                print("funuc stop moving")
+            
 
     def LOGGING ( self, state ):
         homeDir = os.getenv( "HOME" )
