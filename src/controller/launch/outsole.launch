@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="controller" type="outsole_controller.py" name="outsole_controller" output="screen"/>
+    <node pkg="communication" type="passLS_srv" name="passLS_srv" output="screen"/>
+    <node pkg="communication" type="modbus_robot_srv" name="modbus_robot_srv" output="screen"/>
+    <node pkg="communication" type="modbus_plc_srv" name="modbus_plc_srv" output="screen"/>
+    <!-- <include file="$(find realsense2_camera)/launch/demo_pointcloud.launch"/> -->
+
+</launch>
