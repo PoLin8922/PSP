@@ -93,7 +93,7 @@ class controller ():
     def run(self):
         if self.plcState == 1:
             print("funuc start moving")
-            time.sleep(2)
+            time.sleep(5)
             self.plcControl(8)
             self.fanucStart(True)
             self.plcControl(2)
