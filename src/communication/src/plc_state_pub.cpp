@@ -20,7 +20,7 @@ int Read_val(modbus_t* ctx, uint16_t address) {
     uint16_t read_data[QUANTITY] = { 0 };
     int rc = modbus_read_registers(ctx, address, QUANTITY, read_data);
     if (rc == -1) {
-        fprintf(stderr, "modbus_read_registers error: %s\n", modbus_strerror(errno));
+        fprintf(stderr, "plc_state_pub modbus_read_registers error: %s\n", modbus_strerror(errno));
         modbus_close(ctx);
         modbus_free(ctx);
         exit(1);

@@ -29,15 +29,25 @@ class controller ():
         self.plcState = data.data
 
     def capture( self, request ):
+        print("fuck1")
         rospy.wait_for_service( 'vision_capture' )
+        print("fuck2")
 
         try:
+            print("fuck5")
+
             response = self.capture_proxy( request )
+            print("fuck6")
+
             if response.scan_state:
                 print( '\033[94m' + "[SERVER] Vision Capture Successfully Completed." + '\033[0m' )
                 request = False
+                print("fuck7")
+
                 return True
             else:
+                print("fuck8")
+
                 request = False
                 return False
                         
@@ -127,9 +137,13 @@ class controller ():
         if self.plcState == 1:
             print("funuc start moving")
             time.sleep(1)
+            print("fuck3")
             if not self.capture(True):
+                print("fuck4")
+
                 self.plcControl(4)
             else:
+                print("contorller.py run")
                 self.planning(True)
                 self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
                 self.plcControl(8)

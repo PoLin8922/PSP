@@ -5,6 +5,7 @@ import sys
 import time
 import os
 import datetime
+from outsole_path.srv import outsole_path,outsole_pathRequest,outsole_pathResponse
 from communication.srv import ModbusPLC, ModbusRobot, Ftp
 from std_msgs.msg import Int32
 
@@ -16,6 +17,7 @@ class controller ():
         rospy.init_node ( 'controller' )
         self.plcState = 0
         
+        self.pp_proxy = rospy.ServiceProxy ( 'outsole_path', outsole_path )
         self.ftp_proxy = rospy.ServiceProxy('ftp_transfer', Ftp)
         self.funuc_proxy = rospy.ServiceProxy('modbus_robot_control', ModbusRobot)
         self.plc_proxy = rospy.ServiceProxy('modbus_plc_control', ModbusPLC)
@@ -24,6 +26,18 @@ class controller ():
     def plc_callback( self, data):
         self.plcState = data.data
 
+    def planning(self, request):
+        rospy.wait_for_service('outsole_path')
+
+        try:
+            response = self.pp_proxy( request )
+            if response:
+                print( '\033[94m' + "[SERVER] Path Planning Successfully Completed." + '\033[0m' )
+                request = False
+        
+        except rospy.ServiceException as e:
+            print( '\033[91m' + " [SERVER] Error Sending Path Planning Request." +  '\033[0m' )
+            self.LOGGING(   "   [SERVER] Error Sending Path Planning Request" )
 
     def fileTf(self, host, path):  
         rospy.wait_for_service('ftp_transfer')
@@ -50,8 +64,8 @@ class controller ():
     def fanucStart(self, request):
         rospy.wait_for_service('modbus_robot_control')
 
+        response = self.funuc_proxy(request)
         try:
-            response = self.funuc_proxy(request)
             if response:
                 print( '\033[94m' + "[SERVER] Execute FUNUC Successfully Completed." + '\033[0m' )
         
@@ -94,6 +108,8 @@ class controller ():
         if self.plcState == 1:
             print("funuc start moving")
             time.sleep(5)
+            self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
+
             self.plcControl(8)
             self.fanucStart(True)
             self.plcControl(2)

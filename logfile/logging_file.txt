@@ -469,3 +469,6 @@
    [SERVER] Error Sending Path Planning Request
    [SERVER] Error Sending Vision Capture Request
    [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Execute FUNUC Request
