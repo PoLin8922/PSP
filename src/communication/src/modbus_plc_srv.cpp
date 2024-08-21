@@ -18,7 +18,7 @@ modbus_t* ctx;
 bool semaphore = false;
 
 void modnus_restore(){
-    printf("restore modbus\n");
+    // printf("restore modbus\n");
 
     /* reset modbus tcp */
     modbus_close(ctx);
@@ -36,7 +36,7 @@ void modnus_restore(){
     int retry_count = 5;
     while (retry_count > 0) {
         if (modbus_connect(ctx) == -1) {
-            fprintf(stderr, "modbus_connect error: %s\n", modbus_strerror(errno));
+            // fprintf(stderr, "modbus_connect error: %s\n", modbus_strerror(errno));
             retry_count--;
             usleep(1000 * 1000);  // wait 1 second before retrying
         } else {
@@ -50,7 +50,7 @@ void modnus_restore(){
         exit(1);
     }
 
-    printf("restore success\n");
+    // printf("restore success\n");
 }
 
 void Set_val(modbus_t* ctx, uint16_t address, uint16_t val) {

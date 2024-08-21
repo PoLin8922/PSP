@@ -6,14 +6,18 @@
 
 /* FUNUC ROBOT */
 #define SERVER_ADDRESS "192.168.255.200"  
-
-/* ROBOGUIDE */
-//#define SERVER_ADDRESS "127.0.0.1" 
-// #define SERVER_ADDRESS "192.168.255.200" 
 #define SERVER_PORT 502 
 #define SLAVE_ID 1       
 #define QUANTITY 4
 #define START_ADDRESS 0
+
+/* ROBOGUIDE */
+//#define SERVER_ADDRESS "127.0.0.1" 
+// #define SERVER_ADDRESS "192.168.255.200" 
+// #define SERVER_PORT 502 
+// #define SLAVE_ID 1       
+// #define QUANTITY 4
+// #define START_ADDRESS 0
 
 // /* PLC */
 // #define SERVER_ADDRESS "192.168.50.30"  

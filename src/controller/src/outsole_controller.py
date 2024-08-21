@@ -107,9 +107,9 @@ class controller ():
     def run(self):
         if self.plcState == 1:
             print("funuc start moving")
-            time.sleep(5)
-            self.fileTf('192.168.255.200', '/home/honglang/PSP/files/H001.LS')
-
+            self.planning(True)
+            time.sleep(2)
+            self.fileTf('192.168.255.200', '/home/honglang/PSP/files/O001.LS')
             self.plcControl(8)
             self.fanucStart(True)
             self.plcControl(2)

@@ -9,14 +9,14 @@ import json
 from sensor_msgs.msg import PointCloud2
 # from outsole_path.srv import GetPath, GetPathResponse
 
-TF_Z_BIAS = 0;
-TF_X_BIAS = 0;
-TF_Y_BIAS = 0;
-velocity = 300;
-PLASMA_DIA = 0.05;
-CLOUD_SEARCHING_RANGE = 0.0014;
-rounds=3;
-mode = 0;
+TF_Z_BIAS = 0
+TF_X_BIAS = 0
+TF_Y_BIAS = 0
+velocity = 300
+PLASMA_DIA = 0.05
+CLOUD_SEARCHING_RANGE = 0.0014
+rounds=3
+mode = 0
 
 def read_parameters():
     global rounds
@@ -148,7 +148,7 @@ def server_callback(req):
 if __name__ == '__main__':
     read_parameters()
     outsole_path = get_path()
-    writeLsFile("/home/honglang/PSP/files/H001.LS", outsole_path)
+    writeLsFile("/home/honglang/PSP/files/O001.LS", outsole_path)
 
     # rospy.init_node('path_planning_service')
     # s = rospy.Service('get_path', GetPath, server_callback)
