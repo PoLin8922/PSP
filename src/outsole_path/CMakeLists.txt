@@ -5,25 +5,26 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath=/usr/lib/gcc/x8
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  pcl_ros
+  rospy
+  std_msgs
+  std_srvs
   message_generation
 )
 
 add_service_files(
   FILES
-  outsole_path.srv
+  get_outpath.srv
 )
 
 generate_messages(
   DEPENDENCIES
   std_msgs
-  sensor_msgs
 )
 
 find_package(Open3D REQUIRED)
 
 catkin_package(
-  CATKIN_DEPENDS roscpp message_runtime
+  CATKIN_DEPENDS message_runtime rospy std_msgs std_srvs
 ) 
 
 include_directories(
@@ -43,3 +44,7 @@ include_directories(
 #   ${Open3D_LIBRARIES}
 # )
 
+catkin_install_python(PROGRAMS
+  src/outsole_path.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

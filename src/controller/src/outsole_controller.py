@@ -5,7 +5,7 @@ import sys
 import time
 import os
 import datetime
-from outsole_path.srv import outsole_path,outsole_pathRequest,outsole_pathResponse
+from outsole.srv import GetPath
 from communication.srv import ModbusPLC, ModbusRobot, Ftp
 from std_msgs.msg import Int32
 
@@ -17,7 +17,7 @@ class controller ():
         rospy.init_node ( 'controller' )
         self.plcState = 0
         
-        self.pp_proxy = rospy.ServiceProxy ( 'outsole_path', outsole_path )
+        self.pp_proxy = rospy.ServiceProxy ( 'outsole_path', GetPath )
         self.ftp_proxy = rospy.ServiceProxy('ftp_transfer', Ftp)
         self.funuc_proxy = rospy.ServiceProxy('modbus_robot_control', ModbusRobot)
         self.plc_proxy = rospy.ServiceProxy('modbus_plc_control', ModbusPLC)
@@ -108,7 +108,7 @@ class controller ():
         if self.plcState == 1:
             print("funuc start moving")
             self.planning(True)
-            time.sleep(2)
+            time.sleep(4)
             self.fileTf('192.168.255.200', '/home/honglang/PSP/files/O001.LS')
             self.plcControl(8)
             self.fanucStart(True)

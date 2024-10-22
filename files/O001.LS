@@ -1,4 +1,4 @@
-/PROG H001.LS
+/PROG O001.LS
 /ATTR
 OWNER       = MNEDITOR;
 COMMENT     = "";

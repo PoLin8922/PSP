@@ -7,10 +7,7 @@ import numpy as np
 import rospy
 import json
 from sensor_msgs.msg import PointCloud2
-
-from os.path import abspath, join, dirname
-sys.path.insert(0, join(abspath(dirname(__file__))))
-from outsole_path.srv import get_outpath, get_outpath_response
+from outsole.srv import GetPath, GetPathResponse
 
 TF_Z_BIAS = 0
 TF_X_BIAS = 0
@@ -146,9 +143,9 @@ def server_callback(req):
         path = get_path()
         if path:
             writeLsFile("/home/honglang/PSP/files/O001.LS", path)
-            return get_outpath_response(True)
+            return GetPathResponse(True)
         else:
-            return get_outpath_response(False)        
+            return GetPathResponse(False)        
 
 if __name__ == '__main__':
     # read_parameters()
@@ -156,5 +153,5 @@ if __name__ == '__main__':
     # writeLsFile("/home/honglang/PSP/files/O001.LS", outsole_path)
 
     rospy.init_node('outsole_path')
-    s = rospy.Service('/outsole_path', get_outpath, server_callback)
+    s = rospy.Service('/outsole_path', GetPath, server_callback)
     rospy.spin()
