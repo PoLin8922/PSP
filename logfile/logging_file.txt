@@ -490,3 +490,20 @@
    [SERVER] Error Sending Vision Capture Request
    [SERVER] Error Sending Vision Capture Request
    [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Execute FUNUC Request
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Path Planning Request
+   [SERVER] Error Set PLC Request
+   [SERVER] Error Sending Vision Capture Request
+   [SERVER] Error Sending Vision Capture Request

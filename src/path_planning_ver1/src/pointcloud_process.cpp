@@ -136,6 +136,8 @@ void printPointCloudRange ( const pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud 
             max_z = point.z;
         }  
     }
+
+    printf("min_x = %f, max_x = %f, min_y = %f, max_y = %f, min_z = %f, max_z = %f\n",min_x, max_x, min_y, max_y, min_z, max_z);
 }
 
 vector<double> FindCorrectionCenter(vector<vector<double>> cloud)
@@ -181,6 +183,16 @@ vector<double> FindCorrectionCenter(vector<vector<double>> cloud)
     center_y = (max_y + min_y) / 2;
 
     vector<double> center = {{center_x, center_y, low_z}};
+
+    low_z = cloud[0][2];
+    for (int i = 0; i < cloud.size(); i++)
+    {
+        if (cloud[i][2] < low_z)
+        {
+            low_z = cloud[i][2];
+        }
+    }
+    printf("low_z = %f\n", low_z);
 
     return center;
 }

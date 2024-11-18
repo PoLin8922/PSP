@@ -263,9 +263,9 @@ vector<vector<double>> PathCloudFilter_short(vector<vector<double>> input_cloud,
             if (cloud[j][0] > low_x && cloud[j][0] < up_x)
             {
                 tmp_cloud.push_back(cloud[j]);
-                average_cloud(tmp_cloud, 1);
             }
         }
+        average_cloud(tmp_cloud, 1);
 
         if (i % 2 == 0)
         {
@@ -301,9 +301,11 @@ vector<vector<double>> PathCloudFilter_short(vector<vector<double>> input_cloud,
         }
         if (i == 1)
         {
+            float push_down = 0.015;
             for (auto &c : tmp_cloud)
             {
                 c[0] = c[0] + shift_distance;
+                c[2] = c[2] + push_down;
             }
             std::reverse(tmp_cloud.begin(), tmp_cloud.end());
             ok_cloud_1.insert(ok_cloud_1.begin(), tmp_cloud.begin(), tmp_cloud.end());
@@ -317,7 +319,43 @@ vector<vector<double>> PathCloudFilter_short(vector<vector<double>> input_cloud,
             std::reverse(tmp_cloud.begin(), tmp_cloud.end());
             ok_cloud_1.insert(ok_cloud_1.end(), tmp_cloud.begin(), tmp_cloud.end());
         }
+
     }
+
+    // improve shoe heel
+    vector<vector<double>> tmp_cloud;
+
+    for (int j = 0; j<cloud.size(); j++)
+    {
+        if (cloud[j][0] > min_x - 0.005 && cloud[j][0] < min_x + 0.005)
+        {
+            tmp_cloud.push_back(cloud[j]);
+        }
+    }
+    average_cloud(tmp_cloud, 1);
+
+    vector<double> ap_max_y = {min_x, max_y + PLASMA_DIA + 0.02, tmp_cloud[tmp_cloud.size() - 1][2] +0.01, 0, 0, 0};
+    vector<double> ap_min_y = {min_x, min_y - PLASMA_DIA - 0.02, tmp_cloud[0][2] +0.01, 0, 0, 0};
+
+    if(ok_cloud_1[ok_cloud_1.size()-1][1] - ok_cloud_1[ok_cloud_1.size()-2][1] > 0)
+    {
+        std::sort(tmp_cloud.begin(), tmp_cloud.end(), SortYaxisBigToSmall); 
+        tmp_cloud.insert(tmp_cloud.begin(), ap_max_y);
+        tmp_cloud.insert(tmp_cloud.end(), ap_min_y);
+    }
+    else
+    {
+        std::sort(tmp_cloud.begin(), tmp_cloud.end(), SortYaxisSmallToBig);   
+        tmp_cloud.insert(tmp_cloud.begin(), ap_min_y);
+        tmp_cloud.insert(tmp_cloud.end(), ap_max_y);  
+    }
+
+    for (auto &c : tmp_cloud)
+    {
+        c[0] = c[0] - shift_distance/2;
+        // c[2] = c[2] + push_down;
+    }
+    ok_cloud_1.insert(ok_cloud_1.end(), tmp_cloud.begin(), tmp_cloud.end());
 
     return ok_cloud_1;
 }

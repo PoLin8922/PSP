@@ -55,7 +55,7 @@ def get_path():
     offset_x = total_distance_on_x / (rounds - 1)
 
     # Append points into array named path
-    path = [[420.246 + TF_X_BIAS, 0.000 + TF_Y_BIAS, 53.417 + TF_Z_BIAS]]  # origin position P[1]
+    path = [[420.246 + TF_X_BIAS, 0.000 + TF_Y_BIAS, 53.417]]  # origin position P[1]
     path.append(point_2)  # P[2]
     path.append(point_3)  # P[3]
 
@@ -75,7 +75,7 @@ def get_path():
         path.append(next_round_point1)
         path.append(next_round_point2)
 
-    path.append([420.246 + TF_X_BIAS, 0.000 + TF_Y_BIAS, 53.417 + TF_Z_BIAS])  # 確保結束於 P[16]，即 P[1] 的位置
+    path.append([420.246 + TF_X_BIAS, 0.000 + TF_Y_BIAS, 53.417])  # 確保結束於 P[16]，即 P[1] 的位置
 
     return path
 

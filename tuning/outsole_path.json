@@ -1,7 +1,7 @@
 {
     "mode": 1,
     "PLASMA_DIA": 0.04,
-    "TF_Z_BIAS":0, 
+    "TF_Z_BIAS":50, 
     "TF_X_BIAS":0,
     "TF_Y_BIAS":0,
     "velocity":0, 
